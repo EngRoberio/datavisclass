@@ -3,53 +3,138 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A Copa dos Dados</title>
+  <title>A Copa dos Dados</title>
 
-<link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 
-<header>
+  <header class="hero">
 
-<h1>A Copa dos Dados</h1>
+    <div class="hero-content">
 
-<p>
-Entre a história das Copas do Mundo e o "DNA dos Campeões":
-o que podemos aprender com os dados?
-</p>
+      <h1>A Copa dos Dados</h1>
 
-</header>
+      <p>
+        Da análise histórica da competição ao "DNA" dos campeões,<br>
+        o que esperar da Copa de 2026?
+      </p>
 
-<nav>
+    </div>
 
-<button>Início</button>
-<button>DNA dos Campeões</button>
-<button>Curiosidades</button>
-<button>Sobre</button>
+  </header>
 
-</nav>
+  <main>
 
-<main>
+    <section class="intro">
 
-<section id="conteudo">
+      <h2>Sobre o projeto</h2>
 
-<h2>Bem-vindo</h2>
+      <p>
+        Esta aplicação web apresenta visualizações interativas sobre a história
+        das Copas do Mundo e os padrões de desempenho das seleções campeãs.
+        O projeto foi desenvolvido na disciplina de Visualização de Dados da
+        Universidade Federal do Ceará.
+      </p>
 
-<p>
-Esta aplicação apresenta visualizações interativas desenvolvidas na disciplina
-Visualização de Dados da Universidade Federal do Ceará.
-</p>
+    </section>
 
-</section>
+    <section class="secao historica">
 
-</main>
+      <h2>1. Análise histórica da competição</h2>
 
-<script src="js/main.js"></script>
+      <p>
+        Esta seção reunirá as visualizações desenvolvidas sobre os padrões
+        históricos das Copas do Mundo, incluindo análises geográficas, temporais
+        e estatísticas gerais da competição.
+      </p>
+
+      <div class="painel-fundo">
+        <div class="grafico-card">
+          <h3>Visualizações históricas</h3>
+          <p>
+            Espaço reservado para os gráficos da análise histórica da competição.
+          </p>
+
+          <div class="grafico-placeholder">
+            Visualizações do Pedro serão incorporadas aqui.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="secao dna">
+
+      <h2>2. O "DNA" dos campeões</h2>
+
+      <p>
+        Esta seção investiga se as seleções campeãs já apresentavam sinais de força
+        antes da Copa começar, analisando seus ciclos pré-Copa por meio de indicadores
+        como percentual de vitórias, percentual de derrotas, média de gols marcados
+        e média de gols sofridos.
+      </p>
+
+      <div class="painel-fundo">
+        <div class="grafico-card">
+          <h3>Categoria 1 — Rankings pré-Copa</h3>
+          <p>
+            Rankings das seleções participantes de cada Copa com destaque para campeão,
+            vice-campeão e terceiro colocado.
+          </p>
+
+          <div id="grafico-categoria-1" class="grafico-placeholder">
+            Visualização da Categoria 1 será incorporada aqui.
+          </div>
+        </div>
+      </div>
+
+      <div class="painel-fundo">
+        <div class="grafico-card">
+          <h3>Categoria 2 — Posição dos campeões nos rankings</h3>
+          <p>
+            Histograma das posições ocupadas pelos campeões históricos e comparação
+            com favoritos da Copa de 2026.
+          </p>
+
+          <div id="grafico-categoria-2" class="grafico-placeholder">
+            Visualização da Categoria 2 será incorporada aqui.
+          </div>
+        </div>
+      </div>
+
+      <div class="painel-fundo">
+        <div class="grafico-card">
+          <h3>Categoria 3 — Campeões históricos versus seleções de 2026</h3>
+          <p>
+            Diagrama de dispersão comparando campeões históricos com seleções
+            participantes da Copa de 2026.
+          </p>
+
+          <div id="grafico-categoria-3" class="grafico-placeholder">
+            Visualização da Categoria 3 será incorporada aqui.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+
+    <p>
+      Projeto Final — Visualização de Dados 2026.1 — Universidade Federal do Ceará
+    </p>
+
+  </footer>
+
+  <script src="js/main.js"></script>
 
 </body>
 
