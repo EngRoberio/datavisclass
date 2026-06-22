@@ -1,39 +1,51 @@
-// ======================================================
+// =========================
 // Projeto: A Copa dos Dados
-// Universidade Federal do Ceará
-// ======================================================
+// =========================
 
-async function iniciarProjeto() {
+console.log("Sistema iniciado.");
 
-    console.clear();
+// -------------------------
+// Carregar o dataset
+// -------------------------
 
-    console.log("====================================");
-    console.log("A COPA DOS DADOS");
-    console.log("Inicializando aplicação...");
-    console.log("====================================");
+async function carregarDados() {
 
-    try {
+    const dados = await d3.csv("dados/results.csv", d3.autoType);
 
-        const dados = await d3.csv("dados/results.csv");
+    console.log("Dataset carregado.");
 
-        console.log("Arquivo carregado com sucesso!");
+    console.log("Número de partidas:", dados.length);
 
-        console.log("Número de partidas:", dados.length);
-
-        console.log("Primeiras partidas:");
-
-        console.table(dados.slice(0,5));
-
-    }
-
-    catch (erro){
-
-        console.error("Erro ao carregar o CSV.");
-
-        console.error(erro);
-
-    }
+    iniciarAplicacao(dados);
 
 }
 
-iniciarProjeto();
+// -------------------------
+// Aplicação principal
+// -------------------------
+
+function iniciarAplicacao(dados){
+
+    categoria1(dados);
+
+}
+
+// -------------------------
+// Categoria 1
+// -------------------------
+
+function categoria1(dados){
+
+    const painel = document.getElementById("grafico-categoria-1");
+
+    painel.innerHTML = "";
+
+    painel.append("Visualização carregada com sucesso.");
+
+    console.log("Categoria 1 pronta.");
+
+}
+
+// -------------------------
+
+carregarDados();
