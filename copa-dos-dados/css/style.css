@@ -10,21 +10,14 @@
 }
 
 html{
-
     scroll-behavior:smooth;
-
 }
 
 body{
-
     font-family:Arial, Helvetica, sans-serif;
-
     background:#ececec;
-
     color:#222;
-
     line-height:1.7;
-
 }
 
 /* =======================================================
@@ -32,35 +25,22 @@ body{
    ======================================================= */
 
 .hero{
-
     background:linear-gradient(90deg,#0b4d2b,#167a46);
-
     color:white;
-
     text-align:center;
-
     padding:70px 20px;
-
 }
 
 .hero h1{
-
     font-size:56px;
-
     margin-bottom:18px;
-
     font-weight:800;
-
 }
 
 .hero p{
-
     font-size:22px;
-
     max-width:1100px;
-
     margin:auto;
-
 }
 
 /* =======================================================
@@ -68,27 +48,17 @@ body{
    ======================================================= */
 
 .intro{
-
     width:88%;
-
     margin:55px auto;
-
     background:white;
-
     border-radius:18px;
-
     padding:35px;
-
     box-shadow:0 8px 25px rgba(0,0,0,.12);
-
 }
 
 .intro h2{
-
     color:#0b4d2b;
-
     margin-bottom:15px;
-
 }
 
 /* =======================================================
@@ -96,35 +66,22 @@ body{
    ======================================================= */
 
 .secao{
-
     width:99%;
-
     margin:70px auto;
-
 }
 
 .secao h2{
-
     text-align:center;
-
     color:#0b4d2b;
-
     font-size:38px;
-
     margin-bottom:15px;
-
 }
 
 .secao>p{
-
     text-align:center;
-
     max-width:1100px;
-
     margin:0 auto 45px;
-
     font-size:18px;
-
 }
 
 /* =======================================================
@@ -132,23 +89,11 @@ body{
    ======================================================= */
 
 .painel-fundo{
-
     display:grid;
-
-    grid-template-columns:
-
-        180px
-
-        minmax(850px,1fr)
-
-        180px;
-
+    grid-template-columns:180px minmax(850px,1fr) 180px;
     gap:22px;
-
     margin-bottom:70px;
-
     align-items:stretch;
-
 }
 
 /* =======================================================
@@ -156,53 +101,38 @@ body{
    ======================================================= */
 
 .grafico-card{
-
     background:white;
-
     border-radius:18px;
-
     padding:35px;
-
     box-shadow:0 10px 30px rgba(0,0,0,.15);
-
     overflow-x:auto;
-
     width:100%;
+    transition:.35s;
+}
 
+.grafico-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 35px rgba(0,0,0,.20);
 }
 
 .grafico-card h3{
-
     color:#0b4d2b;
-
     margin-bottom:12px;
-
     font-size:24px;
-
 }
 
 .grafico-card p{
-
     margin-bottom:20px;
-
 }
 
 .grafico-placeholder{
-
     min-height:620px;
-
     border:2px dashed #cfcfcf;
-
     border-radius:15px;
-
     background:#fafafa;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
 }
 
 /* =======================================================
@@ -210,110 +140,23 @@ body{
    ======================================================= */
 
 .painel-fundo::before,
-
 .painel-fundo::after{
-
     content:"";
-
     display:block;
-
     border-radius:18px;
-
     background-repeat:no-repeat;
-
-    background-size:100% 25%;
-
+    background-size:100% 16.66%;
     background-color:white;
-
     box-shadow:0 8px 22px rgba(0,0,0,.18);
-
     opacity:.42;
-
+    transition:.35s;
 }
 
-/* =======================================================
-   RODAPÉ
-   ======================================================= */
-
-footer{
-
-    background:#0b4d2b;
-
-    color:white;
-
-    text-align:center;
-
-    padding:28px;
-
-    margin-top:80px;
-
+.painel-fundo::before:hover,
+.painel-fundo::after:hover{
+    opacity:.60;
 }
 
-/* =======================================================
-   RESPONSIVIDADE
-   ======================================================= */
-
-@media(max-width:1500px){
-
-    .painel-fundo{
-
-        grid-template-columns:
-
-            150px
-
-            minmax(720px,1fr)
-
-            150px;
-
-    }
-
-}
-
-@media(max-width:1250px){
-
-    .painel-fundo{
-
-        grid-template-columns:
-
-            120px
-
-            minmax(650px,1fr)
-
-            120px;
-
-    }
-
-}
-
-@media(max-width:1100px){
-
-    .painel-fundo{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .painel-fundo::before,
-
-    .painel-fundo::after{
-
-        display:none;
-
-    }
-
-    .hero h1{
-
-        font-size:40px;
-
-    }
-
-    .hero p{
-
-        font-size:18px;
-
-    }
-
-}
 /* =======================================================
    IMAGENS LATERAIS
    ======================================================= */
@@ -321,137 +164,131 @@ footer{
 /* ---------- Categoria 1 (DNA dos Campeões) ---------- */
 
 .dna .painel-fundo:nth-of-type(1)::before{
-
     background-image:
         url("../imagens/Copa1.jpg"),
         url("../imagens/Copa2.jpg"),
-        url("../imagens/Copa3.jpg"),
-        url("../imagens/Copa4.jpg");
+        url("../imagens/Copa9.jpg"),
+        url("../imagens/Copa10.jpg"),
+        url("../imagens/Copa11.jpg"),
+        url("../imagens/Copa3.jpg");
 
     background-position:
         center 0%,
-        center 33.33%,
-        center 66.66%,
+        center 20%,
+        center 40%,
+        center 60%,
+        center 80%,
         center 100%;
-
 }
 
 .dna .painel-fundo:nth-of-type(1)::after{
-
     background-image:
+        url("../imagens/Copa4.jpg"),
         url("../imagens/Copa5.jpg"),
         url("../imagens/Copa6.jpg"),
+        url("../imagens/Copa12.jpg"),
         url("../imagens/Copa7.jpg"),
         url("../imagens/Copa8.jpg");
 
     background-position:
         center 0%,
-        center 33.33%,
-        center 66.66%,
+        center 20%,
+        center 40%,
+        center 60%,
+        center 80%,
         center 100%;
-
 }
-
 
 /* ---------- Categoria 2 ---------- */
 
 .dna .painel-fundo:nth-of-type(2)::before{
-
     background:#ffffff;
-
 }
 
 .dna .painel-fundo:nth-of-type(2)::after{
-
     background:#ffffff;
-
 }
-
 
 /* ---------- Categoria 3 ---------- */
 
 .dna .painel-fundo:nth-of-type(3)::before{
-
     background:#ffffff;
-
 }
 
 .dna .painel-fundo:nth-of-type(3)::after{
-
     background:#ffffff;
-
 }
-
 
 /* ---------- Painel do Pedro ---------- */
 
 .historica .painel-fundo::before{
-
     background:#ffffff;
-
 }
 
 .historica .painel-fundo::after{
-
     background:#ffffff;
-
 }
-
 
 /* =======================================================
-   EFEITOS
+   RODAPÉ
    ======================================================= */
 
-.grafico-card{
-
-    transition:.35s;
-
+footer{
+    background:#0b4d2b;
+    color:white;
+    text-align:center;
+    padding:28px;
+    margin-top:80px;
 }
 
-.grafico-card:hover{
+/* =======================================================
+   RESPONSIVIDADE
+   ======================================================= */
 
-    transform:translateY(-4px);
-
-    box-shadow:0 14px 35px rgba(0,0,0,.20);
-
+@media(max-width:1500px){
+    .painel-fundo{
+        grid-template-columns:150px minmax(720px,1fr) 150px;
+    }
 }
 
-
-.painel-fundo::before,
-.painel-fundo::after{
-
-    transition:.35s;
-
+@media(max-width:1250px){
+    .painel-fundo{
+        grid-template-columns:120px minmax(650px,1fr) 120px;
+    }
 }
 
-.painel-fundo::before:hover,
-.painel-fundo::after:hover{
+@media(max-width:1100px){
+    .painel-fundo{
+        grid-template-columns:1fr;
+    }
 
-    opacity:.60;
+    .painel-fundo::before,
+    .painel-fundo::after{
+        display:none;
+    }
 
+    .hero h1{
+        font-size:40px;
+    }
+
+    .hero p{
+        font-size:18px;
+    }
 }
-
 
 /* =======================================================
    SCROLL
    ======================================================= */
 
 ::-webkit-scrollbar{
-
     width:10px;
-
 }
 
 ::-webkit-scrollbar-thumb{
-
     background:#0b4d2b;
-
     border-radius:20px;
-
 }
 
 ::-webkit-scrollbar-track{
-
     background:#efefef;
-
 }
