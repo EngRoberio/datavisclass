@@ -129,11 +129,11 @@ body{
 }
 
 .secao-cabecalho::before{
-    background-image:url("../imagens/img2.jpg");
+    background-image:url("../imagens/img2.png");
 }
 
 .secao-cabecalho::after{
-    background-image:url("../imagens/img2.jpg");
+    background-image:url("../imagens/img2.png");
 }
 
 .secao-box{
