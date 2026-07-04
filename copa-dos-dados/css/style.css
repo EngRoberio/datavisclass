@@ -28,19 +28,49 @@ body{
     background:linear-gradient(90deg,#0b4d2b,#167a46);
     color:white;
     text-align:center;
-    padding:70px 20px;
+
+    min-height:300px;
+    padding:55px 3%;
+
+    display:grid;
+    grid-template-columns:220px 1fr 220px;
+    align-items:center;
+    gap:35px;
+}
+
+.hero-content{
+    width:100%;
 }
 
 .hero h1{
-    font-size:56px;
-    margin-bottom:18px;
+    font-size:72px;
+    line-height:1.15;
+    margin-bottom:22px;
     font-weight:800;
 }
 
 .hero p{
-    font-size:22px;
+    font-size:27px;
+    line-height:1.5;
     max-width:1100px;
     margin:auto;
+}
+
+/* =======================================================
+   IMAGEM DO CABEÇALHO
+   SIMBOLO 3
+   ======================================================= */
+
+.hero-lateral{
+    width:100%;
+    height:210px;
+
+    background-image:url("../imagens/Simbolo3.jpg");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:contain;
+
+    border-radius:18px;
 }
 
 /* =======================================================
@@ -49,16 +79,30 @@ body{
 
 .intro{
     width:88%;
+    max-width:1500px;
+
     margin:55px auto;
+
     background:white;
+
     border-radius:18px;
-    padding:35px;
+
+    padding:40px 45px;
+
     box-shadow:0 8px 25px rgba(0,0,0,.12);
 }
 
 .intro h2{
     color:#0b4d2b;
-    margin-bottom:15px;
+
+    font-size:32px;
+
+    margin-bottom:18px;
+}
+
+.intro p{
+    font-size:19px;
+    text-align:justify;
 }
 
 /* =======================================================
@@ -70,17 +114,42 @@ body{
     margin:70px auto;
 }
 
-.secao h2{
+/* =======================================================
+   TÍTULO E TEXTO DE CADA SEÇÃO
+   ======================================================= */
+
+.secao-box{
+    width:88%;
+    max-width:1400px;
+
+    margin:0 auto 50px;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:30px 40px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.12);
+}
+
+.secao-box h2{
     text-align:center;
+
     color:#0b4d2b;
+
     font-size:38px;
+
     margin-bottom:15px;
 }
 
-.secao>p{
+.secao-box p{
     text-align:center;
+
     max-width:1100px;
-    margin:0 auto 45px;
+
+    margin:auto;
+
     font-size:18px;
 }
 
@@ -90,9 +159,16 @@ body{
 
 .painel-fundo{
     display:grid;
-    grid-template-columns:180px minmax(850px,1fr) 180px;
+
+    grid-template-columns:
+        180px
+        minmax(850px,1fr)
+        180px;
+
     gap:22px;
+
     margin-bottom:70px;
+
     align-items:stretch;
 }
 
@@ -102,36 +178,53 @@ body{
 
 .grafico-card{
     background:white;
+
     border-radius:18px;
+
     padding:35px;
+
     box-shadow:0 10px 30px rgba(0,0,0,.15);
+
     overflow-x:auto;
+
     width:100%;
+
     transition:.35s;
 }
 
 .grafico-card:hover{
     transform:translateY(-4px);
+
     box-shadow:0 14px 35px rgba(0,0,0,.20);
 }
 
 .grafico-card h3{
     color:#0b4d2b;
+
     margin-bottom:12px;
-    font-size:24px;
+
+    font-size:26px;
 }
 
 .grafico-card p{
     margin-bottom:20px;
+
+    font-size:17px;
 }
 
 .grafico-placeholder{
     min-height:620px;
+
     border:2px dashed #cfcfcf;
+
     border-radius:15px;
+
     background:#fafafa;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
 }
 
@@ -142,13 +235,21 @@ body{
 .painel-fundo::before,
 .painel-fundo::after{
     content:"";
+
     display:block;
+
     border-radius:18px;
+
     background-repeat:no-repeat;
+
     background-size:100% 16.66%;
+
     background-color:white;
+
     box-shadow:0 8px 22px rgba(0,0,0,.18);
+
     opacity:.42;
+
     transition:.35s;
 }
 
@@ -158,12 +259,27 @@ body{
 }
 
 /* =======================================================
-   IMAGENS LATERAIS
+   CONJUNTO 1
+   COPA 1 ATÉ COPA 12
    ======================================================= */
 
-/* ---------- Categoria 1 (DNA dos Campeões) ---------- */
+/* -------------------------------------------------------
+   PEDRO — SUBSEÇÃO 1.1
+   ------------------------------------------------------- */
 
-.dna .painel-fundo:nth-of-type(1)::before{
+.painel-pedro-1::before,
+
+/* -------------------------------------------------------
+   ROBÉRIO — SUBSEÇÃO 2.1
+   ------------------------------------------------------- */
+
+.painel-dna-1::before,
+
+/* -------------------------------------------------------
+   PEDRO — SEÇÃO FINAL
+   ------------------------------------------------------- */
+
+.painel-brasil-final::before{
     background-image:
         url("../imagens/Copa1.jpg"),
         url("../imagens/Copa2.jpg"),
@@ -181,7 +297,9 @@ body{
         center 100%;
 }
 
-.dna .painel-fundo:nth-of-type(1)::after{
+.painel-pedro-1::after,
+.painel-dna-1::after,
+.painel-brasil-final::after{
     background-image:
         url("../imagens/Copa4.jpg"),
         url("../imagens/Copa5.jpg"),
@@ -199,34 +317,135 @@ body{
         center 100%;
 }
 
-/* ---------- Categoria 2 ---------- */
+/* =======================================================
+   CONJUNTO 2
+   FAVORITOS
+   ======================================================= */
 
-.dna .painel-fundo:nth-of-type(2)::before{
-    background:#ffffff;
+/* -------------------------------------------------------
+   PEDRO — SUBSEÇÃO 1.2
+
+   ROBÉRIO — SUBSEÇÃO 2.2
+   ------------------------------------------------------- */
+
+.painel-pedro-2::before,
+.painel-dna-2::before{
+    background-image:
+        url("../imagens/Favoritos1.jpg"),
+        url("../imagens/Favoritos7.jpg"),
+        url("../imagens/Favoritos2.jpg"),
+        url("../imagens/Favoritos6.jpg"),
+        url("../imagens/Favoritos11.jpg"),
+        url("../imagens/Favoritos12.jpg");
+
+    background-position:
+        center 0%,
+        center 20%,
+        center 40%,
+        center 60%,
+        center 80%,
+        center 100%;
 }
 
-.dna .painel-fundo:nth-of-type(2)::after{
-    background:#ffffff;
+.painel-pedro-2::after,
+.painel-dna-2::after{
+    background-image:
+        url("../imagens/Favoritos10.jpg"),
+        url("../imagens/Favoritos9.jpg"),
+        url("../imagens/Favoritos8.jpg"),
+        url("../imagens/Favoritos3.jpg"),
+        url("../imagens/Favoritos4.jpg"),
+        url("../imagens/Favoritos5.jpg");
+
+    background-position:
+        center 0%,
+        center 20%,
+        center 40%,
+        center 60%,
+        center 80%,
+        center 100%;
 }
 
-/* ---------- Categoria 3 ---------- */
+/* =======================================================
+   CONJUNTO 3
+   GRUPOS DA COPA DE 2026
+   ======================================================= */
 
-.dna .painel-fundo:nth-of-type(3)::before{
-    background:#ffffff;
+/* -------------------------------------------------------
+   PEDRO — SUBSEÇÃO 1.3
+
+   ROBÉRIO — SUBSEÇÃO 2.3
+   ------------------------------------------------------- */
+
+.painel-pedro-3::before,
+.painel-dna-3::before{
+    background-image:
+        url("../imagens/GrupoA.jpg"),
+        url("../imagens/GrupoB.jpg"),
+        url("../imagens/GrupoC.jpg"),
+        url("../imagens/GrupoD.jpg"),
+        url("../imagens/GrupoE.jpg"),
+        url("../imagens/GrupoF.jpg");
+
+    background-position:
+        center 0%,
+        center 20%,
+        center 40%,
+        center 60%,
+        center 80%,
+        center 100%;
 }
 
-.dna .painel-fundo:nth-of-type(3)::after{
-    background:#ffffff;
+.painel-pedro-3::after,
+.painel-dna-3::after{
+    background-image:
+        url("../imagens/GrupoG.jpg"),
+        url("../imagens/GrupoH.jpg"),
+        url("../imagens/GrupoI.jpg"),
+        url("../imagens/GrupoJ.jpg"),
+        url("../imagens/GrupoK.jpg"),
+        url("../imagens/GrupoL.jpg");
+
+    background-position:
+        center 0%,
+        center 20%,
+        center 40%,
+        center 60%,
+        center 80%,
+        center 100%;
 }
 
-/* ---------- Painel do Pedro ---------- */
+/* =======================================================
+   SÍMBOLOS ENTRE AS SEÇÕES
+   ======================================================= */
 
-.historica .painel-fundo::before{
-    background:#ffffff;
-}
+.historica::after,
+.dna::after{
+    content:"";
 
-.historica .painel-fundo::after{
-    background:#ffffff;
+    display:block;
+
+    width:88%;
+
+    max-width:1400px;
+
+    height:180px;
+
+    margin:0 auto 70px;
+
+    background-image:
+        url("../imagens/Simbolo1.jpg"),
+        url("../imagens/Simbolo2.jpg");
+
+    background-repeat:no-repeat;
+
+    background-position:
+        left center,
+        right center;
+
+    background-size:
+        180px auto,
+        180px auto;
 }
 
 /* =======================================================
@@ -235,9 +454,13 @@ body{
 
 footer{
     background:#0b4d2b;
+
     color:white;
+
     text-align:center;
+
     padding:28px;
+
     margin-top:80px;
 }
 
@@ -246,18 +469,51 @@ footer{
    ======================================================= */
 
 @media(max-width:1500px){
+
     .painel-fundo{
-        grid-template-columns:150px minmax(720px,1fr) 150px;
+        grid-template-columns:
+            150px
+            minmax(720px,1fr)
+            150px;
+    }
+
+    .hero{
+        grid-template-columns:180px 1fr 180px;
+    }
+
+    .hero h1{
+        font-size:64px;
+    }
+
+    .hero p{
+        font-size:24px;
     }
 }
 
 @media(max-width:1250px){
+
     .painel-fundo{
-        grid-template-columns:120px minmax(650px,1fr) 120px;
+        grid-template-columns:
+            120px
+            minmax(650px,1fr)
+            120px;
+    }
+
+    .hero{
+        grid-template-columns:150px 1fr 150px;
+    }
+
+    .hero h1{
+        font-size:55px;
+    }
+
+    .hero p{
+        font-size:21px;
     }
 }
 
 @media(max-width:1100px){
+
     .painel-fundo{
         grid-template-columns:1fr;
     }
@@ -267,12 +523,43 @@ footer{
         display:none;
     }
 
+    .hero{
+        display:block;
+
+        min-height:auto;
+
+        padding:50px 20px;
+    }
+
+    .hero-lateral{
+        display:none;
+    }
+
     .hero h1{
-        font-size:40px;
+        font-size:44px;
     }
 
     .hero p{
-        font-size:18px;
+        font-size:19px;
+    }
+
+    .secao-box{
+        width:94%;
+    }
+
+    .intro{
+        width:94%;
+    }
+
+    .historica::after,
+    .dna::after{
+        width:90%;
+
+        height:130px;
+
+        background-size:
+            120px auto,
+            120px auto;
     }
 }
 
@@ -286,6 +573,7 @@ footer{
 
 ::-webkit-scrollbar-thumb{
     background:#0b4d2b;
+
     border-radius:20px;
 }
 
