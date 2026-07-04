@@ -60,7 +60,7 @@ body{
     width:100%;
     height:210px;
 
-    background-image:url("../imagens/Simbolo3.png");
+    background-image:url("../imagens/img1.png");
     background-repeat:no-repeat;
     background-position:center;
     background-size:contain;
@@ -130,11 +130,11 @@ body{
 }
 
 .secao-cabecalho::before{
-    background-image:url("../imagens/Simbolo1.jpg");
+    background-image:url("../imagens/img2.jpg");
 }
 
 .secao-cabecalho::after{
-    background-image:url("../imagens/Simbolo2.jpg");
+    background-image:url("../imagens/img2.jpg");
 }
 
 .secao-box{
