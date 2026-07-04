@@ -65,7 +65,7 @@ body{
     background-position:center;
     background-size:contain;
 
-    border-radius:18px;
+    mix-blend-mode:multiply;
     opacity:.50;
 }
 
