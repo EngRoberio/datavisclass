@@ -170,7 +170,7 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
   seletorBox.style.display = "grid";
 
   seletorBox.style.gridTemplateColumns =
-    "repeat(6, minmax(105px, 1fr))";
+    "repeat(11, minmax(55px, 1fr))";
 
   seletorBox.style.gap = "10px 14px";
 
@@ -228,7 +228,7 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
     label.appendChild(input);
 
     label.appendChild(
-      document.createTextNode(`Copa ${ano}`)
+      document.createTextNode(`${ano}`)
     );
 
     seletorBox.appendChild(label);
