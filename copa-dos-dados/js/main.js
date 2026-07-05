@@ -530,61 +530,26 @@ function desenharCategoria2(
   const painel = document.getElementById("grafico-categoria-2");
 
   painel.classList.remove("grafico-placeholder");
-
   painel.innerHTML = "";
 
-
   const indicadores = [
-
-    {
-      nome: "% de vitórias",
-      campo: "perc_vitorias",
-      ordem: "desc"
-    },
-
-    {
-      nome: "% de derrotas",
-      campo: "perc_derrotas",
-      ordem: "asc"
-    },
-
-    {
-      nome: "Média de gols feitos",
-      campo: "media_gols_feitos",
-      ordem: "desc"
-    },
-
-    {
-      nome: "Média de gols sofridos",
-      campo: "media_gols_sofridos",
-      ordem: "asc"
-    }
-
+    { nome: "% de vitórias", campo: "perc_vitorias", ordem: "desc" },
+    { nome: "% de derrotas", campo: "perc_derrotas", ordem: "asc" },
+    { nome: "Média de gols feitos", campo: "media_gols_feitos", ordem: "desc" },
+    { nome: "Média de gols sofridos", campo: "media_gols_sofridos", ordem: "asc" }
   ];
-
 
   const favoritos2026 = [
-
     { team: "Brazil", sigla: "BRA" },
-
     { team: "Argentina", sigla: "ARG" },
-
     { team: "Uruguay", sigla: "URU" },
-
     { team: "Germany", sigla: "ALE" },
-
     { team: "France", sigla: "FRA" },
-
     { team: "Spain", sigla: "ESP" },
-
     { team: "England", sigla: "ING" },
-
     { team: "Netherlands", sigla: "HOL" },
-
     { team: "Portugal", sigla: "POR" }
-
   ];
-
 
   const container = document.createElement("div");
 
@@ -592,7 +557,6 @@ function desenharCategoria2(
   container.style.border = "1px solid #ddd";
   container.style.borderRadius = "12px";
   container.style.background = "#fafafa";
-
 
   const titulo = document.createElement("h2");
 
@@ -603,186 +567,89 @@ function desenharCategoria2(
   titulo.style.marginBottom = "18px";
   titulo.style.color = "#222";
 
-
   const seletorBox = document.createElement("div");
-
   seletorBox.className = "filtro-horizontal";
-
 
   const areaGrafico = document.createElement("div");
 
-
   container.appendChild(titulo);
-
   container.appendChild(seletorBox);
-
   container.appendChild(areaGrafico);
 
   painel.appendChild(container);
 
-
   let indicadorSelecionado = "% de vitórias";
 
-
   indicadores.forEach(ind => {
-
     const label = document.createElement("label");
 
     const input = document.createElement("input");
 
     input.type = "radio";
-
     input.name = "indicador-categoria-2";
-
     input.value = ind.nome;
-
     input.checked = ind.nome === indicadorSelecionado;
 
-
     input.addEventListener("change", () => {
-
       indicadorSelecionado = ind.nome;
-
       atualizar();
-
     });
 
-
     label.appendChild(input);
-
-    label.appendChild(
-      document.createTextNode(ind.nome)
-    );
+    label.appendChild(document.createTextNode(ind.nome));
 
     seletorBox.appendChild(label);
-
   });
 
-
-  function rankingPorIndicador(
-    base,
-    campo,
-    ordem
-  ) {
-
+  function rankingPorIndicador(base, campo, ordem) {
     return [...base]
-
       .filter(d => d.jogos >= 5)
-
       .sort((a, b) =>
-
         ordem === "desc"
-
           ? b[campo] - a[campo]
-
           : a[campo] - b[campo]
-
       )
-
       .map((d, i) => ({
-
         ...d,
-
         posicao: i + 1
-
       }));
-
   }
-
 
   function base2026() {
-
-    const periodo2026 = copas_periodos.find(
-      d => d.ano === 2026
-    );
-
+    const periodo2026 = copas_periodos.find(d => d.ano === 2026);
 
     const jogosPeriodo = selecoes.filter(d =>
-
       d.date >= periodo2026.inicio_analise &&
-
       d.date <= periodo2026.fim_analise
-
     );
 
+    const porSelecao = d3.group(jogosPeriodo, d => d.team);
 
-    const porSelecao = d3.group(
-      jogosPeriodo,
-      d => d.team
-    );
+    return Array.from(porSelecao, ([team, jogos]) => {
+      const total = jogos.length;
+      const vitorias = jogos.filter(d => d.result === "W").length;
+      const derrotas = jogos.filter(d => d.result === "L").length;
+      const gols_feitos = d3.sum(jogos, d => d.goals_for);
+      const gols_sofridos = d3.sum(jogos, d => d.goals_against);
 
-
-    return Array.from(
-      porSelecao,
-      ([team, jogos]) => {
-
-        const total = jogos.length;
-
-        const vitorias = jogos.filter(
-          d => d.result === "W"
-        ).length;
-
-        const derrotas = jogos.filter(
-          d => d.result === "L"
-        ).length;
-
-        const gols_feitos = d3.sum(
-          jogos,
-          d => d.goals_for
-        );
-
-        const gols_sofridos = d3.sum(
-          jogos,
-          d => d.goals_against
-        );
-
-
-        return {
-
-          team,
-
-          jogos: total,
-
-          perc_vitorias: total
-            ? (vitorias / total) * 100
-            : 0,
-
-          perc_derrotas: total
-            ? (derrotas / total) * 100
-            : 0,
-
-          media_gols_feitos: total
-            ? gols_feitos / total
-            : 0,
-
-          media_gols_sofridos: total
-            ? gols_sofridos / total
-            : 0
-
-        };
-
-      }
-    );
-
+      return {
+        team,
+        jogos: total,
+        perc_vitorias: total ? (vitorias / total) * 100 : 0,
+        perc_derrotas: total ? (derrotas / total) * 100 : 0,
+        media_gols_feitos: total ? gols_feitos / total : 0,
+        media_gols_sofridos: total ? gols_sofridos / total : 0
+      };
+    });
   }
 
-
   function atualizar() {
-
-    const indicador = indicadores.find(
-      d => d.nome === indicadorSelecionado
-    );
-
+    const indicador = indicadores.find(d => d.nome === indicadorSelecionado);
 
     const posicoesCampeoes = copas
-
       .filter(copa => copa.ano <= 2022)
-
       .map(copa => {
-
-        const base = pre_campanhas.filter(
-          d => d.copa === copa.ano
-        );
+        const base = pre_campanhas.filter(d => d.copa === copa.ano);
 
         const ranking = rankingPorIndicador(
           base,
@@ -790,385 +657,198 @@ function desenharCategoria2(
           indicador.ordem
         );
 
-        const campeao = ranking.find(
-          d => d.team === copa.campeao
-        );
-
+        const campeao = ranking.find(d => d.team === copa.campeao);
 
         return campeao
-
           ? {
-
               copa: copa.ano,
-
               campeao: copa.campeao,
-
               posicao: campeao.posicao
-
             }
-
           : null;
-
       })
-
       .filter(d => d !== null);
-
 
     const rankingCompleto2026 = rankingPorIndicador(
-
       base2026(),
-
       indicador.campo,
-
       indicador.ordem
-
     );
-
 
     const rankingFavoritos2026 = favoritos2026
-
       .map(fav => {
-
-        const encontrado = rankingCompleto2026.find(
-          d => d.team === fav.team
-        );
-
+        const encontrado = rankingCompleto2026.find(d => d.team === fav.team);
 
         return encontrado
-
           ? {
-
               ...encontrado,
-
               sigla: fav.sigla
-
             }
-
           : null;
-
       })
-
       .filter(d => d !== null);
 
-
     const maxPosicaoGeral = Math.max(
-
-      d3.max(
-        posicoesCampeoes,
-        d => d.posicao
-      ),
-
-      d3.max(
-        rankingFavoritos2026,
-        d => d.posicao
-      )
-
+      d3.max(posicoesCampeoes, d => d.posicao),
+      d3.max(rankingFavoritos2026, d => d.posicao)
     );
 
-
-    const frequencias = d3.range(
-      1,
-      maxPosicaoGeral + 1
-    ).map(pos => {
-
-      const campeoesNaPosicao =
-        posicoesCampeoes.filter(
-          d => d.posicao === pos
-        );
-
+    const frequencias = d3.range(1, maxPosicaoGeral + 1).map(pos => {
+      const campeoesNaPosicao = posicoesCampeoes.filter(
+        d => d.posicao === pos
+      );
 
       return {
-
         posicao: pos,
-
         frequencia: campeoesNaPosicao.length,
-
         tooltip:
           campeoesNaPosicao.length > 0
-
             ? campeoesNaPosicao
                 .map(d => `${d.campeao} (${d.copa})`)
                 .join("\n")
-
             : "Nenhum campeão histórico nesta posição"
-
       };
-
     });
 
-
-    const yMax = d3.max(
-      frequencias,
-      d => d.frequencia
-    );
-
-
+    const yMax = d3.max(frequencias, d => d.frequencia);
     const yFavoritos = yMax + 1.15;
 
-
     const faixaFavoritos = [{
-
-      x1: 1,
-
-      x2: maxPosicaoGeral,
-
+      x1: 0.5,
+      x2: maxPosicaoGeral + 0.5,
       y1: yFavoritos - 0.60,
-
       y2: yFavoritos + 1.70
-
     }];
 
-
     const favoritosPlot = rankingFavoritos2026.map(d => {
-
       const valorIndicador =
-
         indicador.campo === "perc_vitorias"
-
           ? d.perc_vitorias.toFixed(1) + "%"
-
           : indicador.campo === "perc_derrotas"
-
           ? d.perc_derrotas.toFixed(1) + "%"
-
           : indicador.campo === "media_gols_feitos"
-
           ? d.media_gols_feitos.toFixed(2)
-
           : d.media_gols_sofridos.toFixed(2);
 
-
       return {
-
         ...d,
-
         y: yFavoritos,
-
         tooltip:
           `${d.team}\n` +
           `Posição: ${d.posicao}º\n` +
           `${indicador.nome}: ${valorIndicador}`
-
       };
-
     });
 
-
     const grafico = Plot.plot({
-
       width: 1050,
-
       height: 450,
-
       marginTop: 105,
-
       marginRight: 35,
-
       marginBottom: 60,
-
       marginLeft: 55,
 
-
       style: {
-
         fontSize: 10
-
       },
-
 
       x: {
-  label: "Posição no ranking pré-Copa",
-  domain: [1, maxPosicaoGeral],
-  ticks: d3.range(5, maxPosicaoGeral + 1, 5),
-  tickFormat: d => d,
-  tickRotate: 0
-},
-
-      y: {
-
-        label: null,
-
-        axis: null,
-
-        grid: true,
-
-        domain: [
-          0,
-          yFavoritos + 1.6
-        ],
-
-        ticks: d3.range(
-          0,
-          yFavoritos + 1.6,
-          0.5
-        )
-
+        label: "Posição no ranking pré-Copa",
+        domain: [0.5, maxPosicaoGeral + 0.5],
+        ticks: d3.range(5, maxPosicaoGeral + 1, 5),
+        tickFormat: d => d,
+        tickRotate: 0
       },
 
+      y: {
+        label: null,
+        axis: null,
+        grid: true,
+        domain: [0, yFavoritos + 1.6],
+        ticks: d3.range(0, yFavoritos + 1.6, 0.5)
+      },
 
       marks: [
-
         Plot.rect(faixaFavoritos, {
-
           x1: "x1",
-
           x2: "x2",
-
           y1: "y1",
-
           y2: "y2",
-
           fill: "#000",
-
           fillOpacity: 0.045
-
         }),
 
-
-        Plot.text([
-          {
-            x: 1,
-            y: yFavoritos + 0.35,
-            texto: "Favoritos"
-          }
-        ], {
-
+        Plot.text([{ x: 1, y: yFavoritos + 0.35, texto: "Favoritos" }], {
           x: "x",
-
           y: "y",
-
           text: "texto",
-
           dx: -10,
-
           textAnchor: "end",
-
           fontSize: 11,
-
           fontWeight: 700,
-
           fill: "#444"
-
         }),
 
-
-        Plot.text([
-          {
-            x: 1,
-            y: yFavoritos + 0.05,
-            texto: "2026"
-          }
-        ], {
-
+        Plot.text([{ x: 1, y: yFavoritos + 0.05, texto: "2026" }], {
           x: "x",
-
           y: "y",
-
           text: "texto",
-
           dx: -10,
-
           textAnchor: "end",
-
           fontSize: 11,
-
           fontWeight: 700,
-
           fill: "#444"
-
         }),
 
-
-        Plot.barY(frequencias, {
-
-          x: "posicao",
-
+        Plot.rectY(frequencias, {
+          x1: d => d.posicao - 0.45,
+          x2: d => d.posicao + 0.45,
           y: "frequencia",
-
           fill: "#8A8A8A",
-
           title: "tooltip"
-
         }),
-
 
         Plot.text(
-          frequencias.filter(
-            d => d.frequencia > 0
-          ),
+          frequencias.filter(d => d.frequencia > 0),
           {
-
             x: "posicao",
-
             y: "frequencia",
-
             text: d => d.frequencia,
-
             dy: -7,
-
             fontSize: 13,
-
             fontWeight: 700,
-
             fill: "#222"
-
           }
         ),
 
-
         Plot.dot(favoritosPlot, {
-
           x: "posicao",
-
           y: "y",
-
           r: 4,
-
           fill: "#D4AF37",
-
           stroke: "#222",
-
           title: "tooltip"
-
         }),
 
-
         Plot.text(favoritosPlot, {
-
           x: "posicao",
-
           y: "y",
-
           text: "team",
-
           dx: 2,
-
           dy: -11,
-
           rotate: -45,
-
           textAnchor: "start",
-
           fontSize: 12,
-
           fontWeight: 700,
-
           fill: "#222"
-
         })
-
       ]
-
     });
 
-
     areaGrafico.replaceChildren(grafico);
-
   }
 
-
   atualizar();
-
 }
 
 // ======================================================
