@@ -64,8 +64,6 @@ body{
     background-repeat:no-repeat;
     background-position:center;
     background-size:contain;
-
-    
 }
 
 /* =======================================================
@@ -103,7 +101,7 @@ body{
 }
 
 /* =======================================================
-   CABEÇALHO DAS SEÇÕES COM IMAGENS LATERAIS
+   CABEÇALHO DAS PARTES DO SITE
    ======================================================= */
 
 .secao-cabecalho{
@@ -112,35 +110,35 @@ body{
     gap:22px;
     width:100%;
     margin:0 auto 70px;
-    align-items:stretch;
+    align-items:center;
 }
 
 .secao-cabecalho::before,
 .secao-cabecalho::after{
     content:"";
     display:block;
-    border-radius:18px;
+    min-height:180px;
+
     background-repeat:no-repeat;
     background-position:center;
     background-size:contain;
-    background-color:white;
-    box-shadow:0 8px 22px rgba(0,0,0,.18);
-    opacity:.42;
+
+    opacity:1;
 }
 
 .secao-cabecalho::before{
-    background-image:url("../imagens/img2.png");
+    background-image:url("../imagens/img3.png");
 }
 
 .secao-cabecalho::after{
-    background-image:url("../imagens/img2.png");
+    background-image:url("../imagens/img4.png");
 }
 
 .secao-box{
-    background:white;
-    border-radius:18px;
-    padding:35px 45px;
-    box-shadow:0 8px 25px rgba(0,0,0,.12);
+    background:transparent;
+    border-radius:0;
+    padding:20px 30px;
+    box-shadow:none;
 }
 
 .secao-box h2{
