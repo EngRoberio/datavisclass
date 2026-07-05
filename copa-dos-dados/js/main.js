@@ -1,6 +1,6 @@
 // =========================
 // Projeto: A Copa dos Dados
-// Seção 2 — DNA dos Campeões
+// DNA dos Campeões
 // =========================
 
 async function carregarDados() {
@@ -134,7 +134,7 @@ async function carregarDados() {
 
 
 // ======================================================
-// VISUALIZAÇÃO 2.1
+// 2.1
 // ======================================================
 
 function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
@@ -154,30 +154,14 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
   container.style.borderRadius = "12px";
   container.style.background = "#fafafa";
 
-
-  // ======================================================
-  // TÍTULO INTERNO DO GRÁFICO
-  // ======================================================
-
   const titulo = document.createElement("h2");
 
-  titulo.textContent = "Pré-campanhas das Copas";
-
-  titulo.style.marginTop = "0";
-
-
-  const subtitulo = document.createElement("p");
-
-  subtitulo.textContent =
+  titulo.textContent =
     "Rankings das seleções participantes no ciclo anterior à Copa selecionada.";
 
-  subtitulo.style.marginTop = "-8px";
-  subtitulo.style.color = "#555";
-
-
-  // ======================================================
-  // FILTRO DOS ANOS EM GRADE HORIZONTAL
-  // ======================================================
+  titulo.style.marginTop = "0";
+  titulo.style.marginBottom = "18px";
+  titulo.style.color = "#222";
 
   const seletorBox = document.createElement("div");
 
@@ -190,7 +174,6 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
 
   seletorBox.style.gap = "10px 14px";
 
-
   const tituloFiltro = document.createElement("p");
 
   tituloFiltro.textContent = "Selecione a Copa:";
@@ -201,13 +184,7 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
 
   tituloFiltro.style.gridColumn = "1 / -1";
 
-
   seletorBox.appendChild(tituloFiltro);
-
-
-  // ======================================================
-  // ÁREA DOS QUATRO GRÁFICOS
-  // ======================================================
 
   const areaGraficos = document.createElement("div");
 
@@ -215,21 +192,13 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
   areaGraficos.style.gridTemplateColumns = "1fr 1fr";
   areaGraficos.style.gap = "28px";
 
-
   container.appendChild(titulo);
-  container.appendChild(subtitulo);
   container.appendChild(seletorBox);
   container.appendChild(areaGraficos);
 
   painel.appendChild(container);
 
-
   let anoSelecionado = 2022;
-
-
-  // ======================================================
-  // CRIAÇÃO DOS FILTROS
-  // ======================================================
 
   anos.forEach(ano => {
 
@@ -241,14 +210,12 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
     label.style.cursor = "pointer";
     label.style.whiteSpace = "nowrap";
 
-
     const input = document.createElement("input");
 
     input.type = "radio";
     input.name = "seletor-copa";
     input.value = ano;
     input.checked = ano === anoSelecionado;
-
 
     input.addEventListener("change", () => {
 
@@ -257,7 +224,6 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
       atualizar();
 
     });
-
 
     label.appendChild(input);
 
@@ -269,68 +235,42 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
 
   });
 
-
-  // ======================================================
-  // PREPARAÇÃO DOS DADOS
-  // ======================================================
-
   function prepararBase(ano) {
 
     const info = copas.find(d => d.ano === ano);
-
 
     return pre_campanhas
       .filter(d => d.copa === ano)
       .map(d => {
 
         let status = "demais";
-
         let medalha = "";
 
-
         if (d.team === info.campeao) {
-
           status = "campeao";
-
           medalha = "🥇 ";
-
         }
 
         else if (d.team === info.vice) {
-
           status = "vice";
-
           medalha = "🥈 ";
-
         }
 
         else if (d.team === info.terceiro) {
-
           status = "terceiro";
-
           medalha = "🥉 ";
-
         }
 
-
         return {
-
           ...d,
-
           status,
-
           selecao: medalha + d.team
-
         };
 
       });
 
   }
 
-
-  // ======================================================
-  // FUNÇÃO DOS GRÁFICOS DE BARRAS
-  // ======================================================
 
   function graficoBarras(
     titulo,
@@ -491,10 +431,6 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
   }
 
 
-  // ======================================================
-  // ATUALIZAÇÃO DOS QUATRO GRÁFICOS
-  // ======================================================
-
   function atualizar() {
 
     const base = prepararBase(anoSelecionado);
@@ -579,8 +515,9 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
 
 }
 
+
 // ======================================================
-// VISUALIZAÇÃO 2.2
+// 2.2
 // ======================================================
 
 function desenharCategoria2(
@@ -659,19 +596,12 @@ function desenharCategoria2(
 
   const titulo = document.createElement("h2");
 
-  titulo.textContent = "Posição dos Campeões nos Rankings Pré-Copa";
-
-  titulo.style.marginTop = "0";
-
-
-  const subtitulo = document.createElement("p");
-
-  subtitulo.textContent =
+  titulo.textContent =
     "Histograma das posições históricas dos campeões e comparação com favoritos atuais para 2026.";
 
-  subtitulo.style.color = "#555";
-
-  subtitulo.style.marginTop = "-8px";
+  titulo.style.marginTop = "0";
+  titulo.style.marginBottom = "18px";
+  titulo.style.color = "#222";
 
 
   const seletorBox = document.createElement("div");
@@ -683,8 +613,6 @@ function desenharCategoria2(
 
 
   container.appendChild(titulo);
-
-  container.appendChild(subtitulo);
 
   container.appendChild(seletorBox);
 
@@ -1036,7 +964,7 @@ function desenharCategoria2(
 
       marginRight: 35,
 
-      marginBottom: 75,
+      marginBottom: 60,
 
       marginLeft: 55,
 
@@ -1052,19 +980,17 @@ function desenharCategoria2(
 
         label: "Posição no ranking pré-Copa",
 
-        domain: d3.range(
-          1,
-          maxPosicaoGeral + 1
-        ),
+        domain: [1, maxPosicaoGeral],
 
         ticks: d3.range(
-          1,
-          maxPosicaoGeral + 1
+          5,
+          maxPosicaoGeral + 1,
+          5
         ),
 
         tickFormat: d => d,
 
-        tickRotate: -60
+        tickRotate: 0
 
       },
 
@@ -1257,7 +1183,7 @@ function desenharCategoria2(
 }
 
 // ======================================================
-// VISUALIZAÇÃO 2.3
+// 2.3
 // ======================================================
 
 function desenharCategoria3(
@@ -1358,19 +1284,11 @@ function desenharCategoria3(
   const titulo = document.createElement("h2");
 
   titulo.textContent =
-    "Campeões históricos × seleções de 2026";
-
-  titulo.style.marginTop = "0";
-
-
-  const subtitulo = document.createElement("p");
-
-  subtitulo.textContent =
     "Diagrama de dispersão comparando o desempenho pré-Copa dos campeões históricos com as seleções participantes da Copa de 2026.";
 
-  subtitulo.style.color = "#555";
-
-  subtitulo.style.marginTop = "-8px";
+  titulo.style.marginTop = "0";
+  titulo.style.marginBottom = "18px";
+  titulo.style.color = "#222";
 
 
   const seletorBox = document.createElement("div");
@@ -1382,8 +1300,6 @@ function desenharCategoria3(
 
 
   container.appendChild(titulo);
-
-  container.appendChild(subtitulo);
 
   container.appendChild(seletorBox);
 
@@ -1736,11 +1652,25 @@ function desenharCategoria3(
       Math.ceil(yMax / 0.4) * 0.4;
 
 
-    const yTicks = d3.range(
+    let yTicks = d3.range(
       yInicio,
       yFim + 0.4,
       0.4
     );
+
+
+    if (indicadorY.campo === "perc_derrotas") {
+
+      const inicioTick =
+        Math.ceil(yInicio / 5) * 5;
+
+      yTicks = d3.range(
+        inicioTick,
+        yFim + 5,
+        5
+      );
+
+    }
 
 
     const quadrantes = [
