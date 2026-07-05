@@ -977,23 +977,12 @@ function desenharCategoria2(
 
 
       x: {
-
-        label: "Posição no ranking pré-Copa",
-
-        domain: [1, maxPosicaoGeral],
-
-        ticks: d3.range(
-          5,
-          maxPosicaoGeral + 1,
-          5
-        ),
-
-        tickFormat: d => d,
-
-        tickRotate: 0
-
-      },
-
+  label: "Posição no ranking pré-Copa",
+  domain: [1, maxPosicaoGeral],
+  ticks: d3.range(5, maxPosicaoGeral + 1, 5),
+  tickFormat: d => d,
+  tickRotate: 0
+},
 
       y: {
 
