@@ -1,22 +1,44 @@
-// =========================
+// ======================================================
 // Projeto: A Copa dos Dados
-// DNA dos Campeões
-// =========================
+// Visualizações Gerais + DNA dos Campeões
+// ======================================================
+
+
+// ======================================================
+// CARREGAMENTO E PROCESSAMENTO DOS DADOS
+// ======================================================
 
 async function carregarDados() {
-  const dados = await d3.csv("dados/results.csv", d3.autoType);
+
+  const dados = await d3.csv(
+    "dados/results.csv",
+    d3.autoType
+  );
+
+
+  // ======================================================
+  // TRANSFORMAÇÃO DAS PARTIDAS
+  // ======================================================
 
   const selecoes = dados.flatMap(jogo => {
+
     const casa = {
       date: jogo.date,
       team: jogo.home_team,
       opponent: jogo.away_team,
       goals_for: jogo.home_score,
       goals_against: jogo.away_score,
+
       result:
-        jogo.home_score > jogo.away_score ? "W" :
-        jogo.home_score < jogo.away_score ? "L" : "D"
+        jogo.home_score > jogo.away_score
+          ? "W"
+          : jogo.home_score < jogo.away_score
+          ? "L"
+          : "D",
+
+      tournament: jogo.tournament
     };
+
 
     const visitante = {
       date: jogo.date,
@@ -24,120 +46,2314 @@ async function carregarDados() {
       opponent: jogo.home_team,
       goals_for: jogo.away_score,
       goals_against: jogo.home_score,
+
       result:
-        jogo.away_score > jogo.home_score ? "W" :
-        jogo.away_score < jogo.home_score ? "L" : "D"
+        jogo.away_score > jogo.home_score
+          ? "W"
+          : jogo.away_score < jogo.home_score
+          ? "L"
+          : "D",
+
+      tournament: jogo.tournament
     };
 
+
     return [casa, visitante];
+
   });
 
+
+  // ======================================================
+  // INFORMAÇÕES HISTÓRICAS DAS COPAS
+  // ======================================================
+
   const copas = [
-    { ano: 1930, campeao: "Uruguay", vice: "Argentina", terceiro: "United States" },
-    { ano: 1934, campeao: "Italy", vice: "Czechoslovakia", terceiro: "Germany" },
-    { ano: 1938, campeao: "Italy", vice: "Hungary", terceiro: "Brazil" },
-    { ano: 1950, campeao: "Uruguay", vice: "Brazil", terceiro: "Sweden" },
-    { ano: 1954, campeao: "Germany", vice: "Hungary", terceiro: "Austria" },
-    { ano: 1958, campeao: "Brazil", vice: "Sweden", terceiro: "France" },
-    { ano: 1962, campeao: "Brazil", vice: "Czechoslovakia", terceiro: "Chile" },
-    { ano: 1966, campeao: "England", vice: "Germany", terceiro: "Portugal" },
-    { ano: 1970, campeao: "Brazil", vice: "Italy", terceiro: "Germany" },
-    { ano: 1974, campeao: "Germany", vice: "Netherlands", terceiro: "Poland" },
-    { ano: 1978, campeao: "Argentina", vice: "Netherlands", terceiro: "Brazil" },
-    { ano: 1982, campeao: "Italy", vice: "Germany", terceiro: "Poland" },
-    { ano: 1986, campeao: "Argentina", vice: "Germany", terceiro: "France" },
-    { ano: 1990, campeao: "Germany", vice: "Argentina", terceiro: "Italy" },
-    { ano: 1994, campeao: "Brazil", vice: "Italy", terceiro: "Sweden" },
-    { ano: 1998, campeao: "France", vice: "Brazil", terceiro: "Croatia" },
-    { ano: 2002, campeao: "Brazil", vice: "Germany", terceiro: "Turkey" },
-    { ano: 2006, campeao: "Italy", vice: "France", terceiro: "Germany" },
-    { ano: 2010, campeao: "Spain", vice: "Netherlands", terceiro: "Germany" },
-    { ano: 2014, campeao: "Germany", vice: "Argentina", terceiro: "Netherlands" },
-    { ano: 2018, campeao: "France", vice: "Croatia", terceiro: "Belgium" },
-    { ano: 2022, campeao: "Argentina", vice: "France", terceiro: "Croatia" }
+
+    {
+      ano: 1930,
+      campeao: "Uruguay",
+      vice: "Argentina",
+      terceiro: "United States"
+    },
+
+    {
+      ano: 1934,
+      campeao: "Italy",
+      vice: "Czechoslovakia",
+      terceiro: "Germany"
+    },
+
+    {
+      ano: 1938,
+      campeao: "Italy",
+      vice: "Hungary",
+      terceiro: "Brazil"
+    },
+
+    {
+      ano: 1950,
+      campeao: "Uruguay",
+      vice: "Brazil",
+      terceiro: "Sweden"
+    },
+
+    {
+      ano: 1954,
+      campeao: "Germany",
+      vice: "Hungary",
+      terceiro: "Austria"
+    },
+
+    {
+      ano: 1958,
+      campeao: "Brazil",
+      vice: "Sweden",
+      terceiro: "France"
+    },
+
+    {
+      ano: 1962,
+      campeao: "Brazil",
+      vice: "Czechoslovakia",
+      terceiro: "Chile"
+    },
+
+    {
+      ano: 1966,
+      campeao: "England",
+      vice: "Germany",
+      terceiro: "Portugal"
+    },
+
+    {
+      ano: 1970,
+      campeao: "Brazil",
+      vice: "Italy",
+      terceiro: "Germany"
+    },
+
+    {
+      ano: 1974,
+      campeao: "Germany",
+      vice: "Netherlands",
+      terceiro: "Poland"
+    },
+
+    {
+      ano: 1978,
+      campeao: "Argentina",
+      vice: "Netherlands",
+      terceiro: "Brazil"
+    },
+
+    {
+      ano: 1982,
+      campeao: "Italy",
+      vice: "Germany",
+      terceiro: "Poland"
+    },
+
+    {
+      ano: 1986,
+      campeao: "Argentina",
+      vice: "Germany",
+      terceiro: "France"
+    },
+
+    {
+      ano: 1990,
+      campeao: "Germany",
+      vice: "Argentina",
+      terceiro: "Italy"
+    },
+
+    {
+      ano: 1994,
+      campeao: "Brazil",
+      vice: "Italy",
+      terceiro: "Sweden"
+    },
+
+    {
+      ano: 1998,
+      campeao: "France",
+      vice: "Brazil",
+      terceiro: "Croatia"
+    },
+
+    {
+      ano: 2002,
+      campeao: "Brazil",
+      vice: "Germany",
+      terceiro: "Turkey"
+    },
+
+    {
+      ano: 2006,
+      campeao: "Italy",
+      vice: "France",
+      terceiro: "Germany"
+    },
+
+    {
+      ano: 2010,
+      campeao: "Spain",
+      vice: "Netherlands",
+      terceiro: "Germany"
+    },
+
+    {
+      ano: 2014,
+      campeao: "Germany",
+      vice: "Argentina",
+      terceiro: "Netherlands"
+    },
+
+    {
+      ano: 2018,
+      campeao: "France",
+      vice: "Croatia",
+      terceiro: "Belgium"
+    },
+
+    {
+      ano: 2022,
+      campeao: "Argentina",
+      vice: "France",
+      terceiro: "Croatia"
+    }
+
   ];
+
+
+  // ======================================================
+  // PARTIDAS DA COPA DO MUNDO
+  // ======================================================
 
   const jogosCopa = dados
     .filter(d => d.tournament === "FIFA World Cup")
     .sort((a, b) => a.date - b.date);
 
-  const porAno = d3.group(jogosCopa, d => d.date.getFullYear());
 
-  const copas_periodos = Array.from(porAno, ([ano, jogos]) => {
-    const datas = jogos.map(d => d.date);
+  const porAno = d3.group(
+    jogosCopa,
+    d => d.date.getFullYear()
+  );
 
-    const participantes = Array.from(
-      new Set(jogos.flatMap(d => [d.home_team, d.away_team]))
-    ).sort();
 
-    return {
-      ano,
-      inicio: d3.min(datas),
-      fim: d3.max(datas),
-      participantes
-    };
-  })
-    .sort((a, b) => a.ano - b.ano)
-    .map((copa, i, arr) => {
-      const anterior = arr[i - 1];
+  // ======================================================
+  // PERÍODOS DAS COPAS E CICLOS PRÉ-COPA
+  // ======================================================
+
+  const copas_periodos = Array.from(
+
+    porAno,
+
+    ([ano, jogos]) => {
+
+      const datas = jogos.map(d => d.date);
+
+
+      const participantes = Array.from(
+
+        new Set(
+
+          jogos.flatMap(d => [
+            d.home_team,
+            d.away_team
+          ])
+
+        )
+
+      ).sort();
+
 
       return {
-        ano: copa.ano,
-        inicio_copa: copa.inicio,
-        fim_copa: copa.fim,
-        inicio_analise: anterior
-          ? d3.timeDay.offset(anterior.fim, 1)
-          : d3.timeYear.offset(copa.inicio, -4),
-        fim_analise: d3.timeDay.offset(copa.inicio, -1),
-        participantes: copa.participantes
+        ano,
+        inicio: d3.min(datas),
+        fim: d3.max(datas),
+        participantes
       };
+
+    }
+
+  )
+
+    .sort((a, b) => a.ano - b.ano)
+
+    .map((copa, i, arr) => {
+
+      const anterior = arr[i - 1];
+
+
+      return {
+
+        ano: copa.ano,
+
+        inicio_copa: copa.inicio,
+
+        fim_copa: copa.fim,
+
+        inicio_analise:
+          anterior
+            ? d3.timeDay.offset(anterior.fim, 1)
+            : d3.timeYear.offset(copa.inicio, -4),
+
+        fim_analise:
+          d3.timeDay.offset(copa.inicio, -1),
+
+        participantes:
+          copa.participantes
+
+      };
+
     });
+
+
+  // ======================================================
+  // CAMPANHAS PRÉ-COPA
+  // ======================================================
 
   const pre_campanhas = copas_periodos
-    .filter(copa => copa.ano <= 2022)
+
+    .filter(copa => copa.ano <= 2026)
+
     .flatMap(copa => {
+
       const jogosPeriodo = selecoes.filter(d =>
+
         d.date >= copa.inicio_analise &&
+
         d.date <= copa.fim_analise &&
+
         copa.participantes.includes(d.team)
+
       );
 
-      const porSelecao = d3.group(jogosPeriodo, d => d.team);
 
-      return Array.from(porSelecao, ([team, jogos]) => {
-        const total = jogos.length;
-        const vitorias = jogos.filter(d => d.result === "W").length;
-        const empates = jogos.filter(d => d.result === "D").length;
-        const derrotas = jogos.filter(d => d.result === "L").length;
-        const gols_feitos = d3.sum(jogos, d => d.goals_for);
-        const gols_sofridos = d3.sum(jogos, d => d.goals_against);
+      const porSelecao = d3.group(
+        jogosPeriodo,
+        d => d.team
+      );
 
-        return {
-          copa: copa.ano,
-          team,
-          jogos: total,
-          vitorias,
-          empates,
-          derrotas,
-          perc_vitorias: total ? (vitorias / total) * 100 : 0,
-          perc_derrotas: total ? (derrotas / total) * 100 : 0,
-          media_gols_feitos: total ? gols_feitos / total : 0,
-          media_gols_sofridos: total ? gols_sofridos / total : 0
-        };
-      });
+
+      return Array.from(
+
+        porSelecao,
+
+        ([team, jogos]) => {
+
+          const total = jogos.length;
+
+          const vitorias =
+            jogos.filter(d => d.result === "W").length;
+
+          const empates =
+            jogos.filter(d => d.result === "D").length;
+
+          const derrotas =
+            jogos.filter(d => d.result === "L").length;
+
+          const gols_feitos =
+            d3.sum(jogos, d => d.goals_for);
+
+          const gols_sofridos =
+            d3.sum(jogos, d => d.goals_against);
+
+
+          return {
+
+            copa: copa.ano,
+
+            team,
+
+            jogos: total,
+
+            vitorias,
+
+            empates,
+
+            derrotas,
+
+            perc_vitorias:
+              total
+                ? (vitorias / total) * 100
+                : 0,
+
+            perc_derrotas:
+              total
+                ? (derrotas / total) * 100
+                : 0,
+
+            media_gols_feitos:
+              total
+                ? gols_feitos / total
+                : 0,
+
+            media_gols_sofridos:
+              total
+                ? gols_sofridos / total
+                : 0
+
+          };
+
+        }
+
+      );
+
     });
 
-  desenharCategoria1(copas, copas_periodos, pre_campanhas);
-  desenharCategoria2(copas, copas_periodos, pre_campanhas, selecoes);
-  desenharCategoria3(copas, copas_periodos, pre_campanhas, selecoes);
+
+  // ======================================================
+  // PARTIDAS PARA A REDE DOS CARRASCOS
+  // ======================================================
+
+  const jogos_copa = selecoes
+
+    .filter(jogo =>
+
+      jogo.tournament === "FIFA World Cup" &&
+
+      jogo.date.getFullYear() !== 2026
+
+    )
+
+    .sort((a, b) => a.date - b.date);
+
+
+  // ======================================================
+  // CARREGAMENTO DO MAPA-MÚNDI
+  // ======================================================
+
+  const mundo = await fetch(
+    "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"
+  ).then(resposta => resposta.json());
+
+
+  // ======================================================
+  // PAÍSES PARTICIPANTES DAS COPAS
+  // ======================================================
+
+  const listaOriginalPaises = Array.from(
+
+    new Set(
+
+      copas_periodos.flatMap(
+        d => d.participantes
+      )
+
+    )
+
+  );
+
+
+  const listaAjustadaPaises = listaOriginalPaises.flatMap(pais => {
+
+    switch (pais) {
+
+      case "United States":
+        return "United States of America";
+
+      case "DR Congo":
+        return "Democratic Republic of the Congo";
+
+      case "Republic of Ireland":
+        return "Ireland";
+
+      case "Czech Republic":
+
+      case "Czechoslovakia":
+        return "Czechia";
+
+      case "German DR":
+        return "Germany";
+
+      case "Yugoslavia":
+
+      case "Serbia":
+        return "Serbia";
+
+      case "England":
+
+      case "Scotland":
+
+      case "Wales":
+
+      case "Northern Ireland":
+        return "United Kingdom";
+
+      default:
+        return pais;
+
+    }
+
+  });
+
+
+  const paises_copa = Array.from(
+    new Set(listaAjustadaPaises)
+  );
+
+
+  // ======================================================
+  // CHAMADA DAS CINCO VISUALIZAÇÕES
+  // ======================================================
+
+  desenharPedro1(
+    copas,
+    copas_periodos,
+    pre_campanhas,
+    mundo,
+    paises_copa
+  );
+
+
+  desenharPedro2(
+    jogos_copa
+  );
+
+
+  desenharCategoria1(
+    copas,
+    copas_periodos,
+    pre_campanhas
+  );
+
+
+  desenharCategoria2(
+    copas,
+    copas_periodos,
+    pre_campanhas,
+    selecoes
+  );
+
+
+  desenharCategoria3(
+    copas,
+    copas_periodos,
+    pre_campanhas,
+    selecoes
+  );
+
 }
 
+// ======================================================
+// PARTE 2 DE 5
+// PEDRO 1
+// MAPA-MÚNDI + LINHA DOS CICLOS + SCATTER PLOT
+// ======================================================
+
+function desenharPedro1(
+  copas,
+  copas_periodos,
+  pre_campanhas,
+  mundo,
+  paises_copa
+) {
+
+  const painel = document.getElementById("grafico-pedro-1");
+
+  painel.classList.remove("grafico-placeholder");
+  painel.innerHTML = "";
+
+
+  // ======================================================
+  // CONFIGURAÇÕES GERAIS
+  // ======================================================
+
+  const campeoes = [
+    "Argentina",
+    "Brazil",
+    "France",
+    "Germany",
+    "Italy",
+    "Spain",
+    "United Kingdom",
+    "Uruguay"
+  ];
+
+
+  const campeoesFiltro = [
+    "Argentina",
+    "Brazil",
+    "England",
+    "France",
+    "Germany",
+    "Italy",
+    "Spain",
+    "Uruguay"
+  ];
+
+
+  const titulosPorPais = {
+
+    Argentina: [
+      1978,
+      1986,
+      2022
+    ],
+
+    Brazil: [
+      1958,
+      1962,
+      1970,
+      1994,
+      2002
+    ],
+
+    England: [
+      1966
+    ],
+
+    France: [
+      1998,
+      2018
+    ],
+
+    Germany: [
+      1954,
+      1974,
+      1990,
+      2014
+    ],
+
+    Italy: [
+      1934,
+      1938,
+      1982,
+      2006
+    ],
+
+    Spain: [
+      2010
+    ],
+
+    Uruguay: [
+      1930,
+      1950
+    ]
+
+  };
+
+
+  // ======================================================
+  // CONTAINER PRINCIPAL
+  // ======================================================
+
+  const container = document.createElement("div");
+
+  container.className = "pedro-painel-container";
+
+
+  // ======================================================
+  // TÍTULO DO GRÁFICO
+  // ======================================================
+
+  const titulo = document.createElement("h2");
+
+  titulo.className = "pedro-titulo-grafico";
+
+  titulo.textContent =
+    "Mapa-múndi dos países participantes da Copa do Mundo";
+
+
+  // ======================================================
+  // FILTRO
+  // ======================================================
+
+  const seletorBox = document.createElement("div");
+
+  seletorBox.className =
+    "filtro-horizontal pedro-filtro";
+
+
+  const tituloFiltro = document.createElement("p");
+
+  tituloFiltro.textContent =
+    "Seleção campeã:";
+
+  tituloFiltro.style.fontWeight = "700";
+
+  tituloFiltro.style.margin = "0 10px 0 0";
+
+
+  seletorBox.appendChild(tituloFiltro);
+
+
+  // ======================================================
+  // ÁREA DO MAPA
+  // ======================================================
+
+  const areaMapa = document.createElement("div");
+
+  areaMapa.className = "pedro-mapa";
+
+
+  // ======================================================
+  // ÁREA DOS DOIS GRÁFICOS INFERIORES
+  // ======================================================
+
+  const areaGraficosInferiores =
+    document.createElement("div");
+
+  areaGraficosInferiores.className =
+    "pedro-graficos-inferiores";
+
+
+  const areaLinha =
+    document.createElement("div");
+
+
+  const areaScatter =
+    document.createElement("div");
+
+
+  areaGraficosInferiores.appendChild(
+    areaLinha
+  );
+
+  areaGraficosInferiores.appendChild(
+    areaScatter
+  );
+
+
+  container.appendChild(titulo);
+
+  container.appendChild(seletorBox);
+
+  container.appendChild(areaMapa);
+
+  container.appendChild(
+    areaGraficosInferiores
+  );
+
+
+  painel.appendChild(container);
+
+
+  // ======================================================
+  // SELEÇÃO INICIAL
+  // ======================================================
+
+  let selecaoSelecionada = "Brazil";
+
+
+  // ======================================================
+  // CRIAÇÃO DOS FILTROS
+  // ======================================================
+
+  campeoesFiltro.forEach(selecao => {
+
+    const label =
+      document.createElement("label");
+
+
+    const input =
+      document.createElement("input");
+
+
+    input.type = "radio";
+
+    input.name =
+      "selecao-pedro-1";
+
+    input.value =
+      selecao;
+
+    input.checked =
+      selecao === selecaoSelecionada;
+
+
+    input.addEventListener(
+      "change",
+      () => {
+
+        selecaoSelecionada =
+          selecao;
+
+        atualizar();
+
+      }
+    );
+
+
+    label.appendChild(input);
+
+    label.appendChild(
+
+      document.createTextNode(selecao)
+
+    );
+
+
+    seletorBox.appendChild(label);
+
+  });
+
+
+  // ======================================================
+  // FUNÇÃO DE AJUSTE DOS NOMES DO MAPA
+  // ======================================================
+
+  function ajustarNomeMapa(selecao) {
+
+    return selecao === "England"
+
+      ? "United Kingdom"
+
+      : selecao;
+
+  }
+
+
+  // ======================================================
+  // INFORMAÇÕES DOS CAMPEÕES PARA O TOOLTIP DO MAPA
+  // ======================================================
+
+  function obterHistoricoPais(nomePais) {
+
+    const historicos = {
+
+      Brazil:
+        "Campeã na Suécia (1958), Chile (1962), México (1970), Estados Unidos (1994) e Japão/Coreia do Sul (2002). É a única seleção campeã em quatro continentes diferentes.",
+
+
+      Germany:
+        "Campeã na Suíça (1954), Alemanha (1974), Itália (1990) e Brasil (2014). É a única seleção europeia campeã em território sul-americano.",
+
+
+      Italy:
+        "Campeã na Itália (1934), França (1938), Espanha (1982) e Alemanha (2006). Foi a primeira seleção campeã fora de seus próprios domínios.",
+
+
+      Argentina:
+        "Campeã na Argentina (1978), México (1986) e Catar (2022).",
+
+
+      France:
+        "Campeã na França (1998) e Rússia (2018).",
+
+
+      Uruguay:
+        "Campeã no Uruguai (1930) e Brasil (1950). Todas as suas conquistas ocorreram em território sul-americano.",
+
+
+      Spain:
+        "Campeã na África do Sul (2010). É a única seleção campeã mundial em território africano.",
+
+
+      "United Kingdom":
+        "A Inglaterra foi campeã mundial em 1966, jogando em seus próprios domínios."
+
+    };
+
+
+    if (historicos[nomePais]) {
+
+      return historicos[nomePais];
+
+    }
+
+
+    if (
+      paises_copa.includes(nomePais)
+    ) {
+
+      return "Participante da Copa do Mundo sem títulos mundiais.";
+
+    }
+
+
+    return "País sem participação na Copa do Mundo.";
+
+  }
+
+
+  // ======================================================
+  // DESENHAR MAPA-MÚNDI
+  // ======================================================
+
+  function desenharMapa() {
+
+    const selecaoMapa =
+      ajustarNomeMapa(selecaoSelecionada);
+
+
+    const largura = 1000;
+
+    const altura = 370;
+
+
+    const paises = topojson.feature(
+
+      mundo,
+
+      mundo.objects.countries
+
+    );
+
+
+    const projecao = d3
+      .geoNaturalEarth1()
+
+      .fitSize(
+        [
+          largura,
+          altura
+        ],
+        paises
+      );
+
+
+    const caminho =
+      d3.geoPath(projecao);
+
+
+    const svg = d3
+
+      .create("svg")
+
+      .attr(
+        "viewBox",
+        `0 0 ${largura} ${altura}`
+      )
+
+      .attr(
+        "style",
+        "width:100%; height:auto;"
+      );
+
+
+    svg
+
+      .append("g")
+
+      .selectAll("path")
+
+      .data(paises.features)
+
+      .join("path")
+
+      .attr(
+        "d",
+        caminho
+      )
+
+      .attr(
+        "fill",
+        d => {
+
+          const nome =
+            d.properties.name;
+
+
+          if (
+            nome === selecaoMapa
+          ) {
+
+            return "#e63946";
+
+          }
+
+
+          if (
+            campeoes.includes(nome)
+          ) {
+
+            return "#7FFFD4";
+
+          }
+
+
+          if (
+            paises_copa.includes(nome)
+          ) {
+
+            return "#1d3557";
+
+          }
+
+
+          return "#dddddd";
+
+        }
+      )
+
+      .attr(
+        "stroke",
+        "#ffffff"
+      )
+
+      .attr(
+        "stroke-width",
+        0.5
+      )
+
+      .append("title")
+
+      .text(
+        d =>
+          `${d.properties.name}\n${obterHistoricoPais(d.properties.name)}`
+      );
+
+
+    areaMapa.replaceChildren(
+      svg.node()
+    );
+
+  }
+
+
+  // ======================================================
+  // PREPARAR DADOS DOS CICLOS
+  // ======================================================
+
+  function prepararDadosCiclos() {
+
+    const anosCampeao =
+      titulosPorPais[selecaoSelecionada] || [];
+
+
+    return pre_campanhas
+
+      .filter(
+
+        d =>
+          d.team === selecaoSelecionada
+
+      )
+
+      .map(d => {
+
+        const saldo =
+
+          d.media_gols_feitos -
+
+          d.media_gols_sofridos;
+
+
+        return {
+
+          ...d,
+
+          saldo_gols: saldo,
+
+          campeao:
+
+            anosCampeao.includes(d.copa),
+
+          icone:
+
+            anosCampeao.includes(d.copa)
+
+              ? "🏆"
+
+              : "⚽",
+
+          tooltipLinha:
+
+            `Copa: ${d.copa}\n` +
+
+            `Jogos: ${d.jogos}\n` +
+
+            `Vitórias: ${d.vitorias}\n` +
+
+            `% de vitórias: ${d.perc_vitorias.toFixed(0)}%`,
+
+
+          tooltipScatter:
+
+            `Copa: ${d.copa}\n` +
+
+            `% de vitórias: ${d.perc_vitorias.toFixed(0)}%\n` +
+
+            `Saldo médio de gols: ${saldo.toFixed(2)}`
+
+        };
+
+      });
+
+  }
+
+
+  // ======================================================
+  // DESENHAR GRÁFICO DE LINHA
+  // ======================================================
+
+  function desenharLinha(dadosCiclos) {
+
+    const grafico = Plot.plot({
+
+      width: 500,
+
+      height: 310,
+
+      marginTop: 35,
+
+      marginRight: 25,
+
+      marginBottom: 60,
+
+      marginLeft: 65,
+
+
+      style: {
+
+        fontSize: 11,
+
+        background: "#fafafa"
+
+      },
+
+
+      x: {
+
+        label: "Ano da Copa",
+
+        domain: [
+          1930,
+          2026
+        ],
+
+        ticks:
+          d3.range(
+            1930,
+            2027,
+            8
+          )
+
+      },
+
+
+      y: {
+
+        label:
+          "% de vitórias por ciclo",
+
+        domain: [
+          0,
+          100
+        ],
+
+        grid: true
+
+      },
+
+
+      marks: [
+
+        Plot.line(
+
+          dadosCiclos,
+
+          {
+
+            x: "copa",
+
+            y: "perc_vitorias",
+
+            stroke: "#1d3557",
+
+            strokeWidth: 3
+
+          }
+
+        ),
+
+
+        Plot.text(
+
+          dadosCiclos,
+
+          {
+
+            x: "copa",
+
+            y: "perc_vitorias",
+
+            text: "icone",
+
+            fontSize: 16,
+
+            title: "tooltipLinha"
+
+          }
+
+        )
+
+      ]
+
+    });
+
+
+    areaLinha.replaceChildren(
+      grafico
+    );
+
+  }
+
+
+  // ======================================================
+  // DESENHAR SCATTER PLOT
+  // ======================================================
+
+  function desenharScatter(dadosCiclos) {
+
+    const grafico = Plot.plot({
+
+      width: 500,
+
+      height: 310,
+
+      marginTop: 35,
+
+      marginRight: 30,
+
+      marginBottom: 60,
+
+      marginLeft: 65,
+
+
+      style: {
+
+        fontSize: 11,
+
+        background: "#fafafa"
+
+      },
+
+
+      x: {
+
+        label:
+          "Saldo médio de gols por ciclo",
+
+        grid: true
+
+      },
+
+
+      y: {
+
+        label:
+          "% de vitórias por ciclo",
+
+        domain: [
+          0,
+          100
+        ],
+
+        grid: true
+
+      },
+
+
+      marks: [
+
+        Plot.dot(
+
+          dadosCiclos,
+
+          {
+
+            x: "saldo_gols",
+
+            y: "perc_vitorias",
+
+            r: 7,
+
+            fill: d =>
+
+              d.campeao
+
+                ? "#D4AF37"
+
+                : "#1d3557",
+
+            stroke: "#222",
+
+            title: "tooltipScatter"
+
+          }
+
+        ),
+
+
+        Plot.text(
+
+          dadosCiclos,
+
+          {
+
+            x: "saldo_gols",
+
+            y: "perc_vitorias",
+
+            text: d => d.copa,
+
+            dx: 8,
+
+            dy: -8,
+
+            fontSize: 9,
+
+            fill: "#333"
+
+          }
+
+        )
+
+      ]
+
+    });
+
+
+    areaScatter.replaceChildren(
+      grafico
+    );
+
+  }
+
+
+  // ======================================================
+  // ATUALIZAÇÃO DO PAINEL
+  // ======================================================
+
+  function atualizar() {
+
+    const dadosCiclos =
+      prepararDadosCiclos();
+
+
+    desenharMapa();
+
+
+    desenharLinha(
+      dadosCiclos
+    );
+
+
+    desenharScatter(
+      dadosCiclos
+    );
+
+  }
+
+
+  // ======================================================
+  // PRIMEIRA RENDERIZAÇÃO
+  // ======================================================
+
+  atualizar();
+
+}
 
 // ======================================================
-// 2.1
+// PARTE 3 DE 5
+// PEDRO 2
+// GRÁFICO DE REDE DOS CARRASCOS DAS SELEÇÕES CAMPEÃS
 // ======================================================
 
-function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
+function desenharPedro2(jogos_copa) {
+
+  const painel = document.getElementById("grafico-pedro-2");
+
+  painel.classList.remove("grafico-placeholder");
+  painel.innerHTML = "";
+
+
+  // ======================================================
+  // CONTAINER PRINCIPAL
+  // ======================================================
+
+  const container = document.createElement("div");
+
+  container.className = "rede-container";
+
+
+  const titulo = document.createElement("h2");
+
+  titulo.className = "pedro-titulo-grafico";
+
+  titulo.textContent =
+    "Gráfico de rede dos países carrascos das seleções campeãs";
+
+
+  const legenda = document.createElement("div");
+
+  legenda.style.display = "flex";
+  legenda.style.flexWrap = "wrap";
+  legenda.style.gap = "18px";
+  legenda.style.alignItems = "center";
+  legenda.style.marginBottom = "15px";
+  legenda.style.fontSize = "14px";
+  legenda.style.color = "#444";
+
+  legenda.innerHTML = `
+    <span><strong style="color:#1BA652;">●</strong> Seleções campeãs</span>
+    <span><strong style="color:#F7A72F;">●</strong> Carrascos</span>
+    <span>As setas indicam o carrasco em direção à seleção campeã derrotada.</span>
+  `;
+
+
+  const areaRede = document.createElement("div");
+
+  areaRede.style.width = "100%";
+
+
+  container.appendChild(titulo);
+  container.appendChild(legenda);
+  container.appendChild(areaRede);
+
+  painel.appendChild(container);
+
+
+  // ======================================================
+  // CAMPEÕES MUNDIAIS
+  // ======================================================
+
+  const campeoes = [
+    "Brazil",
+    "Argentina",
+    "Germany",
+    "Italy",
+    "France",
+    "Spain",
+    "England",
+    "Uruguay"
+  ];
+
+
+  // ======================================================
+  // CONTAGEM DE VITÓRIAS E DERROTAS
+  // ======================================================
+
+  const contagem = {};
+
+  campeoes.forEach(campeao => {
+
+    contagem[campeao] = {
+      vitorias: {},
+      derrotas: {}
+    };
+
+  });
+
+
+  jogos_copa.forEach(
+    ({ team, opponent, result }) => {
+
+      if (campeoes.includes(team)) {
+
+        if (result === "W") {
+
+          contagem[team].vitorias[opponent] =
+            (contagem[team].vitorias[opponent] || 0) + 1;
+
+        }
+
+
+        if (result === "L") {
+
+          contagem[team].derrotas[opponent] =
+            (contagem[team].derrotas[opponent] || 0) + 1;
+
+        }
+
+      }
+
+
+      if (campeoes.includes(opponent)) {
+
+        if (result === "L") {
+
+          contagem[opponent].vitorias[team] =
+            (contagem[opponent].vitorias[team] || 0) + 1;
+
+        }
+
+
+        if (result === "W") {
+
+          contagem[opponent].derrotas[team] =
+            (contagem[opponent].derrotas[team] || 0) + 1;
+
+        }
+
+      }
+
+    }
+  );
+
+
+  // ======================================================
+  // FUNÇÃO PARA OBTER MAIORES CARRASCOS
+  // ======================================================
+
+  function buscarMaximo(objeto) {
+
+    let rivais = [];
+
+    let max = 0;
+
+
+    Object.entries(objeto).forEach(
+      ([rival, quantidade]) => {
+
+        if (quantidade > max) {
+
+          max = quantidade;
+
+          rivais = [rival];
+
+        }
+
+        else if (
+
+          quantidade === max &&
+
+          max > 0
+
+        ) {
+
+          rivais.push(rival);
+
+        }
+
+      }
+    );
+
+
+    return {
+      rivais,
+      max
+    };
+
+  }
+
+
+  // ======================================================
+  // TABELA DE CARRASCOS POR CAMPEÃO
+  // ======================================================
+
+  const freguesesCarrascos = campeoes
+
+    .map(campeao => {
+
+      const carrasco =
+        buscarMaximo(
+          contagem[campeao].derrotas
+        );
+
+
+      return {
+
+        selecao: campeao,
+
+        carrascos: carrasco.rivais,
+
+        derrotas: carrasco.max
+
+      };
+
+    })
+
+    .sort(
+      (a, b) => a.selecao.localeCompare(b.selecao)
+    );
+
+
+  // ======================================================
+  // MONTAGEM DOS NÓS E LINKS
+  // ======================================================
+
+  const nodesMap = new Set();
+
+  const links = [];
+
+  const derrotasPorCampeao = {};
+
+
+  freguesesCarrascos.forEach(row => {
+
+    const selecao = row.selecao;
+
+    nodesMap.add(selecao);
+
+    derrotasPorCampeao[selecao] =
+      row.derrotas || 0;
+
+
+    row.carrascos.forEach(carrasco => {
+
+      if (
+        carrasco &&
+        carrasco !== "Nenhum"
+      ) {
+
+        nodesMap.add(carrasco);
+
+
+        links.push({
+
+          source: carrasco,
+
+          target: selecao
+
+        });
+
+      }
+
+    });
+
+  });
+
+
+  const nodes = Array.from(nodesMap).map(id => {
+
+    const ehCampeao =
+      campeoes.includes(id);
+
+
+    return {
+
+      id,
+
+      group:
+        ehCampeao
+
+          ? "Campeão"
+
+          : "Carrasco",
+
+      weight:
+        ehCampeao
+
+          ? derrotasPorCampeao[id] || 0
+
+          : 1
+
+    };
+
+  });
+
+
+  // ======================================================
+  // DIMENSÕES DA REDE
+  // ======================================================
+
+  const width = 900;
+
+  const height = 520;
+
+
+  const nodeStroke = "#1a1a1a";
+
+  const linkOpacity = 0.35;
+
+  const nodeDeselectOpacity = 0.25;
+
+  const linkDeselectOpacity = 0.1;
+
+  const nodeHighlightStroke = "#000000";
+
+  const nodeHighlightStrokeWidth = 2.5;
+
+
+  function radiusNode(d) {
+
+    if (d.group === "Campeão") {
+
+      return Math.max(
+        10,
+        d.weight * 4.5
+      );
+
+    }
+
+
+    return 6;
+
+  }
+
+
+  // ======================================================
+  // SIMULAÇÃO DE FORÇAS
+  // ======================================================
+
+  const simulation = d3
+
+    .forceSimulation(nodes)
+
+    .force(
+      "link",
+      d3
+        .forceLink(links)
+        .id(d => d.id)
+        .distance(120)
+    )
+
+    .force(
+      "charge",
+      d3
+        .forceManyBody()
+        .strength(-430)
+    )
+
+    .force(
+      "center",
+      d3.forceCenter(0, 0)
+    )
+
+    .force(
+      "collision",
+      d3
+        .forceCollide()
+        .radius(d => radiusNode(d) + 9)
+    );
+
+
+  // ======================================================
+  // SVG
+  // ======================================================
+
+  const svg = d3
+
+    .create("svg")
+
+    .attr("width", width)
+
+    .attr("height", height)
+
+    .attr(
+      "viewBox",
+      [
+        -width / 2,
+        -height / 2,
+        width,
+        height
+      ]
+    )
+
+    .attr(
+      "style",
+      "max-width:100%; height:auto; background:#fafafa; border-radius:12px;"
+    );
+
+
+  svg.on(
+    "click",
+    deselectNode
+  );
+
+
+  // ======================================================
+  // MARCADORES DAS SETAS
+  // ======================================================
+
+  svg
+
+    .append("defs")
+
+    .selectAll("marker")
+
+    .data(["Carrasco"])
+
+    .join("marker")
+
+    .attr(
+      "id",
+      d => `arrow-${d}`
+    )
+
+    .attr(
+      "viewBox",
+      "0 -5 10 10"
+    )
+
+    .attr("refX", 20)
+
+    .attr("refY", 0)
+
+    .attr("markerWidth", 4.5)
+
+    .attr("markerHeight", 4.5)
+
+    .attr("orient", "auto")
+
+    .append("path")
+
+    .attr(
+      "fill",
+      "#1a1a1a"
+    )
+
+    .attr(
+      "d",
+      "M0,-3L7,0L0,3"
+    );
+
+
+  // ======================================================
+  // LINKS
+  // ======================================================
+
+  const link = svg
+
+    .append("g")
+
+    .selectAll("line")
+
+    .data(links)
+
+    .join("line")
+
+    .attr("stroke", "#1a1a1a")
+
+    .attr("opacity", linkOpacity)
+
+    .attr("stroke-width", 3)
+
+    .attr(
+      "marker-end",
+      "url(#arrow-Carrasco)"
+    );
+
+
+  // ======================================================
+  // NÓS
+  // ======================================================
+
+  const node = svg
+
+    .append("g")
+
+    .selectAll("circle")
+
+    .data(nodes)
+
+    .join("circle")
+
+    .attr(
+      "r",
+      d => radiusNode(d)
+    )
+
+    .attr(
+      "fill",
+      d =>
+        d.group === "Campeão"
+
+          ? "#1BA652"
+
+          : "#F7A72F"
+    )
+
+    .attr(
+      "stroke",
+      nodeStroke
+    )
+
+    .attr(
+      "stroke-width",
+      d =>
+        d.group === "Campeão"
+
+          ? 1.5
+
+          : 1.0
+    )
+
+    .on(
+      "click",
+      clicked
+    );
+
+
+  node
+
+    .append("title")
+
+    .text(
+      d =>
+        d.group === "Campeão"
+
+          ? `${d.id}\n${d.weight} derrota(s) contra seus maiores carrascos`
+
+          : `${d.id}\nCarrasco`
+    );
+
+
+  // ======================================================
+  // RÓTULOS
+  // ======================================================
+
+  const text = svg
+
+    .append("g")
+
+    .selectAll("text")
+
+    .data(nodes)
+
+    .join("text")
+
+    .attr(
+      "dx",
+      d => radiusNode(d) + 6
+    )
+
+    .attr("dy", "0.31em")
+
+    .text(d => d.id)
+
+    .style(
+      "font-family",
+      "Arial, Helvetica, sans-serif"
+    )
+
+    .style(
+      "font-size",
+      d =>
+        d.group === "Campeão"
+
+          ? "12px"
+
+          : "10.5px"
+    )
+
+    .style(
+      "fill",
+      d =>
+        d.group === "Campeão"
+
+          ? "#1a1a1a"
+
+          : "#333333"
+    )
+
+    .style(
+      "font-weight",
+      d =>
+        d.group === "Campeão"
+
+          ? "700"
+
+          : "400"
+    )
+
+    .style(
+      "user-select",
+      "none"
+    )
+
+    .style(
+      "pointer-events",
+      "none"
+    );
+
+
+  // ======================================================
+  // DRAG
+  // ======================================================
+
+  node.call(
+
+    d3.drag()
+
+      .on(
+        "start",
+        dragstarted
+      )
+
+      .on(
+        "drag",
+        dragged
+      )
+
+      .on(
+        "end",
+        dragended
+      )
+
+  );
+
+
+  // ======================================================
+  // TICK DA SIMULAÇÃO
+  // ======================================================
+
+  simulation.on(
+    "tick",
+    () => {
+
+      link
+
+        .attr(
+          "x1",
+          d => d.source.x
+        )
+
+        .attr(
+          "y1",
+          d => d.source.y
+        )
+
+        .attr(
+          "x2",
+          d => d.target.x
+        )
+
+        .attr(
+          "y2",
+          d => d.target.y
+        );
+
+
+      node
+
+        .attr(
+          "cx",
+          d => d.x
+        )
+
+        .attr(
+          "cy",
+          d => d.y
+        );
+
+
+      text
+
+        .attr(
+          "x",
+          d => d.x
+        )
+
+        .attr(
+          "y",
+          d => d.y
+        );
+
+    }
+  );
+
+
+  // ======================================================
+  // FUNÇÕES DE INTERAÇÃO
+  // ======================================================
+
+  function dragstarted(event) {
+
+    if (!event.active) {
+
+      simulation.alphaTarget(0.3).restart();
+
+    }
+
+
+    event.subject.fx =
+      event.subject.x;
+
+    event.subject.fy =
+      event.subject.y;
+
+  }
+
+
+  function dragged(event) {
+
+    event.subject.fx =
+      event.x;
+
+    event.subject.fy =
+      event.y;
+
+  }
+
+
+  function dragended(event) {
+
+    if (!event.active) {
+
+      simulation.alphaTarget(0);
+
+    }
+
+
+    event.subject.fx =
+      null;
+
+    event.subject.fy =
+      null;
+
+  }
+
+
+  function clicked(event, d) {
+
+    event.stopPropagation();
+
+
+    svg
+
+      .selectAll("circle")
+
+      .attr(
+        "stroke",
+        nodeStroke
+      )
+
+      .attr(
+        "stroke-width",
+        n =>
+          n.group === "Campeão"
+
+            ? 1.5
+
+            : 1.0
+      )
+
+      .attr(
+        "stroke-opacity",
+        nodeDeselectOpacity
+      )
+
+      .attr(
+        "fill-opacity",
+        nodeDeselectOpacity
+      );
+
+
+    svg
+
+      .selectAll("line")
+
+      .attr(
+        "opacity",
+        linkDeselectOpacity
+      );
+
+
+    svg
+
+      .selectAll("text")
+
+      .attr(
+        "fill-opacity",
+        nodeDeselectOpacity
+      );
+
+
+    d3.select(event.currentTarget)
+
+      .attr(
+        "stroke",
+        nodeHighlightStroke
+      )
+
+      .attr(
+        "stroke-width",
+        nodeHighlightStrokeWidth
+      )
+
+      .attr(
+        "stroke-opacity",
+        1
+      )
+
+      .attr(
+        "fill-opacity",
+        1
+      );
+
+
+    svg
+
+      .selectAll("text")
+
+      .filter(
+        t => t.id === d.id
+      )
+
+      .attr(
+        "fill-opacity",
+        1
+      );
+
+
+    const vizinhos = new Set();
+
+
+    links.forEach(l => {
+
+      if (
+        l.source.id === d.id
+      ) {
+
+        vizinhos.add(
+          l.target.id
+        );
+
+
+        svg
+
+          .selectAll("line")
+
+          .filter(
+            line =>
+              line.source.id === d.id &&
+              line.target.id === l.target.id
+          )
+
+          .attr(
+            "opacity",
+            0.9
+          );
+
+      }
+
+
+      if (
+        l.target.id === d.id
+      ) {
+
+        vizinhos.add(
+          l.source.id
+        );
+
+
+        svg
+
+          .selectAll("line")
+
+          .filter(
+            line =>
+              line.source.id === l.source.id &&
+              line.target.id === d.id
+          )
+
+          .attr(
+            "opacity",
+            0.9
+          );
+
+      }
+
+    });
+
+
+    svg
+
+      .selectAll("circle")
+
+      .filter(
+        n => vizinhos.has(n.id)
+      )
+
+      .attr(
+        "stroke-opacity",
+        1
+      )
+
+      .attr(
+        "fill-opacity",
+        1
+      );
+
+
+    svg
+
+      .selectAll("text")
+
+      .filter(
+        t => vizinhos.has(t.id)
+      )
+
+      .attr(
+        "fill-opacity",
+        1
+      );
+
+  }
+
+
+  function deselectNode() {
+
+    svg
+
+      .selectAll("circle")
+
+      .attr(
+        "stroke",
+        nodeStroke
+      )
+
+      .attr(
+        "stroke-width",
+        d =>
+          d.group === "Campeão"
+
+            ? 1.5
+
+            : 1.0
+      )
+
+      .attr(
+        "stroke-opacity",
+        1
+      )
+
+      .attr(
+        "fill-opacity",
+        1
+      );
+
+
+    svg
+
+      .selectAll("line")
+
+      .attr(
+        "opacity",
+        linkOpacity
+      );
+
+
+    svg
+
+      .selectAll("text")
+
+      .attr(
+        "fill-opacity",
+        1
+      );
+
+  }
+
+
+  // ======================================================
+  // RENDERIZAÇÃO FINAL
+  // ======================================================
+
+  areaRede.appendChild(
+    svg.node()
+  );
+
+}
+
+// ======================================================
+// PARTE 4 DE 5
+// DNA 1
+// RANKINGS PRÉ-COPA
+// ======================================================
+
+function desenharCategoria1(
+  copas,
+  copas_periodos,
+  pre_campanhas
+) {
+
   const painel = document.getElementById("grafico-categoria-1");
 
   painel.classList.remove("grafico-placeholder");
@@ -166,22 +2382,16 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
   const seletorBox = document.createElement("div");
 
   seletorBox.className = "filtro-horizontal";
-
   seletorBox.style.display = "grid";
-
   seletorBox.style.gridTemplateColumns =
     "repeat(11, minmax(55px, 1fr))";
-
   seletorBox.style.gap = "10px 14px";
 
   const tituloFiltro = document.createElement("p");
 
   tituloFiltro.textContent = "Selecione a Copa:";
-
   tituloFiltro.style.fontWeight = "700";
-
   tituloFiltro.style.margin = "0";
-
   tituloFiltro.style.gridColumn = "1 / -1";
 
   seletorBox.appendChild(tituloFiltro);
@@ -218,22 +2428,17 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
     input.checked = ano === anoSelecionado;
 
     input.addEventListener("change", () => {
-
       anoSelecionado = ano;
-
       atualizar();
-
     });
 
     label.appendChild(input);
-
-    label.appendChild(
-      document.createTextNode(`${ano}`)
-    );
+    label.appendChild(document.createTextNode(`${ano}`));
 
     seletorBox.appendChild(label);
 
   });
+
 
   function prepararBase(ano) {
 
@@ -281,147 +2486,83 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
   ) {
 
     const ordenados = [...dados]
-
       .sort((a, b) =>
-
         ordem === "desc"
-
           ? b[campo] - a[campo]
-
           : a[campo] - b[campo]
-
       )
-
       .slice(0, 10);
-
 
     return Plot.plot({
 
       width: 500,
-
       height: 350,
 
       marginTop: 42,
-
       marginLeft: 195,
-
       marginRight: 65,
-
       marginBottom: 18,
 
-
       style: {
-
         fontSize: 15,
-
         fontWeight: 500
-
       },
-
 
       x: {
-
         label: null,
-
         ticks: 0,
-
         axis: null
-
       },
-
 
       y: {
-
         label: null,
-
         tickSize: 0
-
       },
-
 
       color: {
-
         domain: [
-
           "campeao",
-
           "vice",
-
           "terceiro",
-
           "demais"
-
         ],
-
         range: [
-
           "#D4AF37",
-
           "#BFC1C2",
-
           "#CD7F32",
-
           "#8A8A8A"
-
         ]
-
       },
-
 
       marks: [
 
         Plot.text([titulo], {
-
           frameAnchor: "top-left",
-
           dy: -28,
-
           text: d => d,
-
           fontSize: 14,
-
           fontWeight: 900,
-
           fill: "#222"
-
         }),
-
 
         Plot.barX(ordenados, {
-
           y: "selecao",
-
           x: campo,
-
           fill: "status",
-
           sort: {
-
             y: "x",
-
             reverse: ordem === "desc"
-
           }
-
         }),
 
-
         Plot.text(ordenados, {
-
           y: "selecao",
-
           x: campo,
-
           text: d => formato(d[campo]),
-
           dx: 30,
-
           fill: "#222",
-
           fontSize: 16,
-
           fontWeight: 600
-
         })
 
       ]
@@ -435,89 +2576,61 @@ function desenharCategoria1(copas, copas_periodos, pre_campanhas) {
 
     const base = prepararBase(anoSelecionado);
 
-
     const g1 = graficoBarras(
-
       `Top 10 — Maior % de vitórias (${anoSelecionado})`,
-
       base,
-
       "perc_vitorias",
-
       d => d.toFixed(1) + "%",
-
       "desc"
-
     );
-
 
     const g2 = graficoBarras(
-
       `Top 10 — Menor % de derrotas (${anoSelecionado})`,
-
       base,
-
       "perc_derrotas",
-
       d => d.toFixed(1) + "%",
-
       "asc"
-
     );
-
 
     const g3 = graficoBarras(
-
       `Top 10 — Maior média de gols feitos (${anoSelecionado})`,
-
       base,
-
       "media_gols_feitos",
-
       d => d.toFixed(2),
-
       "desc"
-
     );
-
 
     const g4 = graficoBarras(
-
       `Top 10 — Menor média de gols sofridos (${anoSelecionado})`,
-
       base,
-
       "media_gols_sofridos",
-
       d => d.toFixed(2),
-
       "asc"
-
     );
 
-
     areaGraficos.replaceChildren(
-
       g1,
-
       g2,
-
       g3,
-
       g4
-
     );
 
   }
-
 
   atualizar();
 
 }
 
+// ======================================================
+// PARTE 5 DE 5
+// DNA 2 + DNA 3
+// HISTOGRAMA + SCATTER FINAL
+// ======================================================
+
 
 // ======================================================
-// 2.2
+// DNA 2
+// POSIÇÃO DOS CAMPEÕES NOS RANKINGS
 // ======================================================
 
 function desenharCategoria2(
@@ -581,6 +2694,7 @@ function desenharCategoria2(
   let indicadorSelecionado = "% de vitórias";
 
   indicadores.forEach(ind => {
+
     const label = document.createElement("label");
 
     const input = document.createElement("input");
@@ -599,9 +2713,12 @@ function desenharCategoria2(
     label.appendChild(document.createTextNode(ind.nome));
 
     seletorBox.appendChild(label);
+
   });
 
+
   function rankingPorIndicador(base, campo, ordem) {
+
     return [...base]
       .filter(d => d.jogos >= 5)
       .sort((a, b) =>
@@ -613,9 +2730,12 @@ function desenharCategoria2(
         ...d,
         posicao: i + 1
       }));
+
   }
 
+
   function base2026() {
+
     const periodo2026 = copas_periodos.find(d => d.ano === 2026);
 
     const jogosPeriodo = selecoes.filter(d =>
@@ -626,6 +2746,7 @@ function desenharCategoria2(
     const porSelecao = d3.group(jogosPeriodo, d => d.team);
 
     return Array.from(porSelecao, ([team, jogos]) => {
+
       const total = jogos.length;
       const vitorias = jogos.filter(d => d.result === "W").length;
       const derrotas = jogos.filter(d => d.result === "L").length;
@@ -640,15 +2761,20 @@ function desenharCategoria2(
         media_gols_feitos: total ? gols_feitos / total : 0,
         media_gols_sofridos: total ? gols_sofridos / total : 0
       };
+
     });
+
   }
 
+
   function atualizar() {
+
     const indicador = indicadores.find(d => d.nome === indicadorSelecionado);
 
     const posicoesCampeoes = copas
       .filter(copa => copa.ano <= 2022)
       .map(copa => {
+
         const base = pre_campanhas.filter(d => d.copa === copa.ano);
 
         const ranking = rankingPorIndicador(
@@ -666,6 +2792,7 @@ function desenharCategoria2(
               posicao: campeao.posicao
             }
           : null;
+
       })
       .filter(d => d !== null);
 
@@ -677,6 +2804,7 @@ function desenharCategoria2(
 
     const rankingFavoritos2026 = favoritos2026
       .map(fav => {
+
         const encontrado = rankingCompleto2026.find(d => d.team === fav.team);
 
         return encontrado
@@ -685,6 +2813,7 @@ function desenharCategoria2(
               sigla: fav.sigla
             }
           : null;
+
       })
       .filter(d => d !== null);
 
@@ -694,6 +2823,7 @@ function desenharCategoria2(
     );
 
     const frequencias = d3.range(1, maxPosicaoGeral + 1).map(pos => {
+
       const campeoesNaPosicao = posicoesCampeoes.filter(
         d => d.posicao === pos
       );
@@ -708,6 +2838,7 @@ function desenharCategoria2(
                 .join("\n")
             : "Nenhum campeão histórico nesta posição"
       };
+
     });
 
     const yMax = d3.max(frequencias, d => d.frequencia);
@@ -721,6 +2852,7 @@ function desenharCategoria2(
     }];
 
     const favoritosPlot = rankingFavoritos2026.map(d => {
+
       const valorIndicador =
         indicador.campo === "perc_vitorias"
           ? d.perc_vitorias.toFixed(1) + "%"
@@ -738,11 +2870,14 @@ function desenharCategoria2(
           `Posição: ${d.posicao}º\n` +
           `${indicador.nome}: ${valorIndicador}`
       };
+
     });
 
     const grafico = Plot.plot({
+
       width: 1050,
       height: 390,
+
       marginTop: 45,
       marginRight: 35,
       marginBottom: 60,
@@ -769,6 +2904,7 @@ function desenharCategoria2(
       },
 
       marks: [
+
         Plot.rect(faixaFavoritos, {
           x1: "x1",
           x2: "x2",
@@ -842,17 +2978,23 @@ function desenharCategoria2(
           fontWeight: 700,
           fill: "#222"
         })
+
       ]
+
     });
 
     areaGrafico.replaceChildren(grafico);
+
   }
 
   atualizar();
+
 }
 
+
 // ======================================================
-// 2.3
+// DNA 3
+// CAMPEÕES HISTÓRICOS × SELEÇÕES DE 2026
 // ======================================================
 
 function desenharCategoria3(
@@ -865,82 +3007,55 @@ function desenharCategoria3(
   const painel = document.getElementById("grafico-categoria-3");
 
   painel.classList.remove("grafico-placeholder");
-
   painel.innerHTML = "";
 
-
   const indicadores = [
-
     {
       nome: "% de vitórias",
       campo: "perc_vitorias",
       sentido: "maior",
       formato: d => d.toFixed(1) + "%"
     },
-
     {
       nome: "% de derrotas",
       campo: "perc_derrotas",
       sentido: "menor",
       formato: d => d.toFixed(1) + "%"
     },
-
     {
       nome: "Média de gols feitos",
       campo: "media_gols_feitos",
       sentido: "maior",
       formato: d => d.toFixed(2)
     },
-
     {
       nome: "Média de gols sofridos",
       campo: "media_gols_sofridos",
       sentido: "menor",
       formato: d => d.toFixed(2)
     }
-
   ];
-
 
   const combinacoes = [
-
     ["% de vitórias", "% de derrotas"],
-
     ["% de vitórias", "Média de gols feitos"],
-
     ["% de vitórias", "Média de gols sofridos"],
-
     ["% de derrotas", "Média de gols feitos"],
-
     ["% de derrotas", "Média de gols sofridos"],
-
     ["Média de gols feitos", "Média de gols sofridos"]
-
   ];
-
 
   const favoritos2026 = [
-
     { team: "Brazil", sigla: "BRA" },
-
     { team: "Argentina", sigla: "ARG" },
-
     { team: "Uruguay", sigla: "URU" },
-
     { team: "Germany", sigla: "ALE" },
-
     { team: "France", sigla: "FRA" },
-
     { team: "Spain", sigla: "ESP" },
-
     { team: "England", sigla: "ING" },
-
     { team: "Netherlands", sigla: "HOL" },
-
     { team: "Portugal", sigla: "POR" }
-
   ];
-
 
   const container = document.createElement("div");
 
@@ -948,7 +3063,6 @@ function desenharCategoria3(
   container.style.border = "1px solid #ddd";
   container.style.borderRadius = "12px";
   container.style.background = "#fafafa";
-
 
   const titulo = document.createElement("h2");
 
@@ -959,61 +3073,40 @@ function desenharCategoria3(
   titulo.style.marginBottom = "18px";
   titulo.style.color = "#222";
 
-
   const seletorBox = document.createElement("div");
-
   seletorBox.className = "filtro-horizontal";
-
 
   const areaGrafico = document.createElement("div");
 
-
   container.appendChild(titulo);
-
   container.appendChild(seletorBox);
-
   container.appendChild(areaGrafico);
 
   painel.appendChild(container);
 
-
   let combinacaoSelecionada =
     "% de vitórias × Média de gols sofridos";
-
 
   combinacoes.forEach(comb => {
 
     const texto = `${comb[0]} × ${comb[1]}`;
 
-
     const label = document.createElement("label");
-
 
     const input = document.createElement("input");
 
     input.type = "radio";
-
     input.name = "combinacao-categoria-3";
-
     input.value = texto;
-
     input.checked = texto === combinacaoSelecionada;
 
-
     input.addEventListener("change", () => {
-
       combinacaoSelecionada = texto;
-
       atualizar();
-
     });
 
-
     label.appendChild(input);
-
-    label.appendChild(
-      document.createTextNode(texto)
-    );
+    label.appendChild(document.createTextNode(texto));
 
     seletorBox.appendChild(label);
 
@@ -1022,103 +3115,47 @@ function desenharCategoria3(
 
   function base2026Participantes() {
 
-    const periodo2026 = copas_periodos.find(
-      d => d.ano === 2026
-    );
+    const periodo2026 = copas_periodos.find(d => d.ano === 2026);
 
-
-    const participantes2026 =
-      periodo2026.participantes;
-
+    const participantes2026 = periodo2026.participantes;
 
     const jogosPeriodo = selecoes.filter(d =>
-
       d.date >= periodo2026.inicio_analise &&
-
       d.date <= periodo2026.fim_analise &&
-
       participantes2026.includes(d.team)
-
     );
 
+    const porSelecao = d3.group(jogosPeriodo, d => d.team);
 
-    const porSelecao = d3.group(
-      jogosPeriodo,
-      d => d.team
-    );
+    return Array.from(porSelecao, ([team, jogos]) => {
 
+      const total = jogos.length;
+      const vitorias = jogos.filter(d => d.result === "W").length;
+      const derrotas = jogos.filter(d => d.result === "L").length;
+      const gols_feitos = d3.sum(jogos, d => d.goals_for);
+      const gols_sofridos = d3.sum(jogos, d => d.goals_against);
 
-    return Array.from(
-      porSelecao,
-      ([team, jogos]) => {
+      const favorito = favoritos2026.find(f => f.team === team);
 
-        const total = jogos.length;
+      return {
+        grupo:
+          team === "Brazil"
+            ? "Brasil"
+            : favorito
+            ? "Favoritos 2026"
+            : "Seleções 2026",
 
-        const vitorias = jogos.filter(
-          d => d.result === "W"
-        ).length;
+        team,
+        sigla: favorito ? favorito.sigla : "",
+        label: team,
+        jogos: total,
+        perc_vitorias: total ? (vitorias / total) * 100 : 0,
+        perc_derrotas: total ? (derrotas / total) * 100 : 0,
+        media_gols_feitos: total ? gols_feitos / total : 0,
+        media_gols_sofridos: total ? gols_sofridos / total : 0
+      };
 
-        const derrotas = jogos.filter(
-          d => d.result === "L"
-        ).length;
-
-        const gols_feitos = d3.sum(
-          jogos,
-          d => d.goals_for
-        );
-
-        const gols_sofridos = d3.sum(
-          jogos,
-          d => d.goals_against
-        );
-
-
-        const favorito = favoritos2026.find(
-          f => f.team === team
-        );
-
-
-        return {
-
-          grupo:
-            team === "Brazil"
-
-              ? "Brasil"
-
-              : favorito
-
-              ? "Favoritos 2026"
-
-              : "Seleções 2026",
-
-          team,
-
-          sigla: favorito ? favorito.sigla : "",
-
-          label: team,
-
-          jogos: total,
-
-          perc_vitorias: total
-            ? (vitorias / total) * 100
-            : 0,
-
-          perc_derrotas: total
-            ? (derrotas / total) * 100
-            : 0,
-
-          media_gols_feitos: total
-            ? gols_feitos / total
-            : 0,
-
-          media_gols_sofridos: total
-            ? gols_sofridos / total
-            : 0
-
-        };
-
-      }
-    );
+    });
 
   }
 
@@ -1126,52 +3163,30 @@ function desenharCategoria3(
   function baseCampeoesHistoricos() {
 
     return copas
-
       .filter(copa => copa.ano <= 2022)
-
       .map(copa => {
 
         const campeao = pre_campanhas.find(d =>
-
           d.copa === copa.ano &&
-
           d.team === copa.campeao
-
         );
 
-
         return campeao
-
           ? {
-
               grupo: "Campeões históricos",
-
               team: copa.campeao,
-
               sigla: "",
-
               label: `${copa.campeao} (${copa.ano})`,
-
               copa: copa.ano,
-
               jogos: campeao.jogos,
-
               perc_vitorias: campeao.perc_vitorias,
-
               perc_derrotas: campeao.perc_derrotas,
-
-              media_gols_feitos:
-                campeao.media_gols_feitos,
-
-              media_gols_sofridos:
-                campeao.media_gols_sofridos
-
+              media_gols_feitos: campeao.media_gols_feitos,
+              media_gols_sofridos: campeao.media_gols_sofridos
             }
-
           : null;
 
       })
-
       .filter(d => d !== null);
 
   }
@@ -1187,27 +3202,17 @@ function desenharCategoria3(
   ) {
 
     const xBom =
-
       indicadorX.sentido === "maior"
-
         ? x >= mediaX
-
         : x <= mediaX;
 
-
     const yBom =
-
       indicadorY.sentido === "maior"
-
         ? y >= mediaY
-
         : y <= mediaY;
 
-
     if (xBom && yBom) return "melhor";
-
     if (!xBom && !yBom) return "pior";
-
     return "neutro";
 
   }
@@ -1218,97 +3223,38 @@ function desenharCategoria3(
     const [nomeX, nomeY] =
       combinacaoSelecionada.split(" × ");
 
-
-    const indicadorX = indicadores.find(
-      d => d.nome === nomeX
-    );
-
-
-    const indicadorY = indicadores.find(
-      d => d.nome === nomeY
-    );
-
+    const indicadorX = indicadores.find(d => d.nome === nomeX);
+    const indicadorY = indicadores.find(d => d.nome === nomeY);
 
     const dadosGrafico = [
-
       ...base2026Participantes(),
-
       ...baseCampeoesHistoricos()
-
     ].map(d => ({
-
       ...d,
-
       x: d[indicadorX.campo],
-
       y: d[indicadorY.campo],
-
       tooltip:
         `${d.label}\n` +
-        `${indicadorX.nome}: ` +
-        `${indicadorX.formato(d[indicadorX.campo])}\n` +
-        `${indicadorY.nome}: ` +
-        `${indicadorY.formato(d[indicadorY.campo])}`
-
+        `${indicadorX.nome}: ${indicadorX.formato(d[indicadorX.campo])}\n` +
+        `${indicadorY.nome}: ${indicadorY.formato(d[indicadorY.campo])}`
     }));
 
-
     const dadosRotulos = dadosGrafico.filter(d =>
-
       d.grupo === "Brasil" ||
-
       d.grupo === "Favoritos 2026"
-
     );
 
+    const xMin = d3.min(dadosGrafico, d => d.x);
+    const xMax = d3.max(dadosGrafico, d => d.x);
+    const yMin = d3.min(dadosGrafico, d => d.y);
+    const yMax = d3.max(dadosGrafico, d => d.y);
 
-    const xMin = d3.min(
-      dadosGrafico,
-      d => d.x
-    );
+    const mediaX = d3.mean(dadosGrafico, d => d.x);
+    const mediaY = d3.mean(dadosGrafico, d => d.y);
 
-
-    const xMax = d3.max(
-      dadosGrafico,
-      d => d.x
-    );
-
-
-    const yMin = d3.min(
-      dadosGrafico,
-      d => d.y
-    );
-
-
-    const yMax = d3.max(
-      dadosGrafico,
-      d => d.y
-    );
-
-
-    const mediaX = d3.mean(
-      dadosGrafico,
-      d => d.x
-    );
-
-
-    const mediaY = d3.mean(
-      dadosGrafico,
-      d => d.y
-    );
-
-
-    const xFolga =
-      (xMax - xMin) * 0.06;
-
-
-    const xInicio =
-      Math.max(0, xMin - xFolga);
-
-
-    const xFim =
-      xMax + xFolga;
-
+    const xFolga = (xMax - xMin) * 0.06;
+    const xInicio = Math.max(0, xMin - xFolga);
+    const xFim = xMax + xFolga;
 
     const yInicio =
       Math.max(
@@ -1316,17 +3262,14 @@ function desenharCategoria3(
         Math.floor(yMin / 0.4) * 0.4
       );
 
-
     const yFim =
       Math.ceil(yMax / 0.4) * 0.4;
-
 
     let yTicks = d3.range(
       yInicio,
       yFim + 0.4,
       0.4
     );
-
 
     if (indicadorY.campo === "perc_derrotas") {
 
@@ -1341,18 +3284,12 @@ function desenharCategoria3(
 
     }
 
-
     const quadrantes = [
-
       {
         x1: xInicio,
-
         x2: mediaX,
-
         y1: mediaY,
-
         y2: yFim,
-
         classe: classificarQuadrante(
           (xInicio + mediaX) / 2,
           (mediaY + yFim) / 2,
@@ -1362,16 +3299,11 @@ function desenharCategoria3(
           indicadorY
         )
       },
-
       {
         x1: mediaX,
-
         x2: xFim,
-
         y1: mediaY,
-
         y2: yFim,
-
         classe: classificarQuadrante(
           (mediaX + xFim) / 2,
           (mediaY + yFim) / 2,
@@ -1381,16 +3313,11 @@ function desenharCategoria3(
           indicadorY
         )
       },
-
       {
         x1: xInicio,
-
         x2: mediaX,
-
         y1: yInicio,
-
         y2: mediaY,
-
         classe: classificarQuadrante(
           (xInicio + mediaX) / 2,
           (yInicio + mediaY) / 2,
@@ -1400,16 +3327,11 @@ function desenharCategoria3(
           indicadorY
         )
       },
-
       {
         x1: mediaX,
-
         x2: xFim,
-
         y1: yInicio,
-
         y2: mediaY,
-
         classe: classificarQuadrante(
           (mediaX + xFim) / 2,
           (yInicio + mediaY) / 2,
@@ -1419,228 +3341,133 @@ function desenharCategoria3(
           indicadorY
         )
       }
-
     ].filter(d => d.classe !== "neutro");
-
 
     const grafico = Plot.plot({
 
       width: 950,
-
       height: 560,
 
       marginTop: 30,
-
       marginRight: 35,
-
       marginBottom: 55,
-
       marginLeft: 70,
 
-
       style: {
-
         fontSize: 13,
-
         background: "#fafafa",
-
         color: "#555"
-
       },
-
 
       x: {
-
         label: indicadorX.nome,
-
         grid: false,
-
-        domain: [
-          xInicio,
-          xFim
-        ]
-
+        domain: [xInicio, xFim]
       },
-
 
       y: {
-
         label: indicadorY.nome,
-
         grid: false,
-
-        domain: [
-          yInicio,
-          yFim
-        ],
-
+        domain: [yInicio, yFim],
         ticks: yTicks
-
       },
-
 
       color: {
-
         domain: [
-
           "Seleções 2026",
-
           "Favoritos 2026",
-
           "Campeões históricos",
-
           "Brasil"
-
         ],
-
         range: [
-
           "#B8B8B8",
-
           "#D4AF37",
-
           "#E53935",
-
           "#006400"
-
         ],
-
         legend: true
-
       },
-
 
       marks: [
 
         Plot.rect(quadrantes, {
-
           x1: "x1",
-
           x2: "x2",
-
           y1: "y1",
-
           y2: "y2",
-
           fill: d =>
             d.classe === "melhor"
               ? "#2E7D32"
               : "#C62828",
-
           fillOpacity: 0.11
-
         }),
-
 
         Plot.frame({
-
           stroke: "#dddddd"
-
         }),
-
 
         Plot.ruleX([mediaX], {
-
           stroke: "#008FB3",
-
           strokeWidth: 2,
-
           strokeDasharray: "6,5"
-
         }),
-
 
         Plot.ruleY([mediaY], {
-
           stroke: "#008FB3",
-
           strokeWidth: 2,
-
           strokeDasharray: "6,5"
-
         }),
-
 
         Plot.dot(dadosGrafico, {
-
           x: "x",
-
           y: "y",
-
           fill: "grupo",
-
           stroke: "#333",
-
           strokeWidth: d =>
-
             d.grupo === "Campeões históricos" ||
-
             d.grupo === "Brasil" ||
-
             d.grupo === "Favoritos 2026"
-
               ? 1.2
-
               : 0.5,
-
           r: d =>
-
             d.grupo === "Campeões históricos" ||
-
             d.grupo === "Brasil" ||
-
             d.grupo === "Favoritos 2026"
-
               ? 6.5
-
               : 4,
-
           fillOpacity: d =>
-
             d.grupo === "Seleções 2026"
-
               ? 0.5
-
               : 0.95,
-
           title: "tooltip"
-
         }),
 
-
         Plot.text(dadosRotulos, {
-
           x: "x",
-
           y: "y",
-
           text: "sigla",
-
           dx: 7,
-
           dy: -7,
-
           fontSize: 9,
-
           fontWeight: 700,
-
           fill: "#222"
-
         })
 
       ]
 
     });
 
-
     areaGrafico.replaceChildren(grafico);
 
   }
-
 
   atualizar();
 
 }
 
+
+// ======================================================
+// CHAMADA FINAL
+// ======================================================
 
 carregarDados();
