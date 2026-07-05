@@ -742,8 +742,8 @@ function desenharCategoria2(
 
     const grafico = Plot.plot({
       width: 1050,
-      height: 450,
-      marginTop: 105,
+      height: 390,
+      marginTop: 45,
       marginRight: 35,
       marginBottom: 60,
       marginLeft: 55,
