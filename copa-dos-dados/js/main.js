@@ -750,7 +750,8 @@ function desenharPedro1(
         label: "Ano da Copa",
         domain: [1930, 2026],
         ticks: d3.range(1930, 2027, 8),
-        tickFormat: d => String(Math.round(d))
+        tickFormat: d => String(Math.round(d)),
+        tickRotate: -45
       },
 
       y: {
@@ -1062,21 +1063,32 @@ function desenharPedro2(jogos_copa) {
   }
 
   const simulation = d3.forceSimulation(nodes)
-    .force(
-      "link",
-      d3.forceLink(links)
-        .id(d => d.id)
-        .distance(130)
-    )
-    .force(
-      "charge",
-      d3.forceManyBody().strength(-430)
-    )
-    .force("center", d3.forceCenter(0, 0))
-    .force(
-      "collision",
-      d3.forceCollide().radius(d => radiusNode(d) + 10)
-    );
+  .force(
+    "link",
+    d3.forceLink(links)
+      .id(d => d.id)
+      .distance(95)
+  )
+  .force(
+    "charge",
+    d3.forceManyBody().strength(-260)
+  )
+  .force(
+    "center",
+    d3.forceCenter(0, 0)
+  )
+  .force(
+    "x",
+    d3.forceX(0).strength(0.08)
+  )
+  .force(
+    "y",
+    d3.forceY(0).strength(0.08)
+  )
+  .force(
+    "collision",
+    d3.forceCollide().radius(d => radiusNode(d) + 10)
+  );
 
   const svg = d3.create("svg")
     .attr("width", width)
