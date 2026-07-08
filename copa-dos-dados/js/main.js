@@ -550,834 +550,348 @@ function desenharPedro1(
   mundo,
   paises_copa
 ) {
-
   const painel = document.getElementById("grafico-pedro-1");
 
   painel.classList.remove("grafico-placeholder");
   painel.innerHTML = "";
 
-
-  // ======================================================
-  // CONFIGURAÇÕES GERAIS
-  // ======================================================
-
   const campeoes = [
-    "Argentina",
-    "Brazil",
-    "France",
-    "Germany",
-    "Italy",
-    "Spain",
-    "United Kingdom",
-    "Uruguay"
+    "Argentina", "Brazil", "France", "Germany",
+    "Italy", "Spain", "United Kingdom", "Uruguay"
   ];
-
 
   const campeoesFiltro = [
-    "Argentina",
-    "Brazil",
-    "England",
-    "France",
-    "Germany",
-    "Italy",
-    "Spain",
-    "Uruguay"
+    "Argentina", "Brazil", "England", "France",
+    "Germany", "Italy", "Spain", "Uruguay"
   ];
 
-
   const titulosPorPais = {
-
-    Argentina: [
-      1978,
-      1986,
-      2022
-    ],
-
-    Brazil: [
-      1958,
-      1962,
-      1970,
-      1994,
-      2002
-    ],
-
-    England: [
-      1966
-    ],
-
-    France: [
-      1998,
-      2018
-    ],
-
-    Germany: [
-      1954,
-      1974,
-      1990,
-      2014
-    ],
-
-    Italy: [
-      1934,
-      1938,
-      1982,
-      2006
-    ],
-
-    Spain: [
-      2010
-    ],
-
-    Uruguay: [
-      1930,
-      1950
-    ]
-
+    Argentina: [1978, 1986, 2022],
+    Brazil: [1958, 1962, 1970, 1994, 2002],
+    England: [1966],
+    France: [1998, 2018],
+    Germany: [1954, 1974, 1990, 2014],
+    Italy: [1934, 1938, 1982, 2006],
+    Spain: [2010],
+    Uruguay: [1930, 1950]
   };
 
-
-  // ======================================================
-  // CONTAINER PRINCIPAL
-  // ======================================================
-
   const container = document.createElement("div");
-
   container.className = "pedro-painel-container";
 
-
-  // ======================================================
-  // TÍTULO DO GRÁFICO
-  // ======================================================
-
   const titulo = document.createElement("h2");
-
   titulo.className = "pedro-titulo-grafico";
-
-  titulo.textContent =
-    "Mapa-múndi dos países participantes da Copa do Mundo";
-
-
-  // ======================================================
-  // FILTRO
-  // ======================================================
+  titulo.textContent = "Mapa-múndi dos países participantes da Copa do Mundo";
 
   const seletorBox = document.createElement("div");
-
-  seletorBox.className =
-    "filtro-horizontal pedro-filtro";
-
+  seletorBox.className = "filtro-horizontal pedro-filtro";
 
   const tituloFiltro = document.createElement("p");
-
-  tituloFiltro.textContent =
-    "Seleção campeã:";
-
+  tituloFiltro.textContent = "Seleção campeã:";
   tituloFiltro.style.fontWeight = "700";
-
   tituloFiltro.style.margin = "0 10px 0 0";
-
 
   seletorBox.appendChild(tituloFiltro);
 
-
-  // ======================================================
-  // ÁREA DO MAPA
-  // ======================================================
-
   const areaMapa = document.createElement("div");
-
   areaMapa.className = "pedro-mapa";
 
+  const areaGraficosInferiores = document.createElement("div");
+  areaGraficosInferiores.className = "pedro-graficos-inferiores";
 
-  // ======================================================
-  // ÁREA DOS DOIS GRÁFICOS INFERIORES
-  // ======================================================
+  const areaLinha = document.createElement("div");
+  const areaScatter = document.createElement("div");
 
-  const areaGraficosInferiores =
-    document.createElement("div");
-
-  areaGraficosInferiores.className =
-    "pedro-graficos-inferiores";
-
-
-  const areaLinha =
-    document.createElement("div");
-
-
-  const areaScatter =
-    document.createElement("div");
-
-
-  areaGraficosInferiores.appendChild(
-    areaLinha
-  );
-
-  areaGraficosInferiores.appendChild(
-    areaScatter
-  );
-
+  areaGraficosInferiores.appendChild(areaLinha);
+  areaGraficosInferiores.appendChild(areaScatter);
 
   container.appendChild(titulo);
-
   container.appendChild(seletorBox);
-
   container.appendChild(areaMapa);
-
-  container.appendChild(
-    areaGraficosInferiores
-  );
-
+  container.appendChild(areaGraficosInferiores);
 
   painel.appendChild(container);
 
-
-  // ======================================================
-  // SELEÇÃO INICIAL
-  // ======================================================
-
   let selecaoSelecionada = "Brazil";
 
-
-  // ======================================================
-  // CRIAÇÃO DOS FILTROS
-  // ======================================================
-
   campeoesFiltro.forEach(selecao => {
-
-    const label =
-      document.createElement("label");
-
-
-    const input =
-      document.createElement("input");
-
+    const label = document.createElement("label");
+    const input = document.createElement("input");
 
     input.type = "radio";
+    input.name = "selecao-pedro-1";
+    input.value = selecao;
+    input.checked = selecao === selecaoSelecionada;
 
-    input.name =
-      "selecao-pedro-1";
-
-    input.value =
-      selecao;
-
-    input.checked =
-      selecao === selecaoSelecionada;
-
-
-    input.addEventListener(
-      "change",
-      () => {
-
-        selecaoSelecionada =
-          selecao;
-
-        atualizar();
-
-      }
-    );
-
+    input.addEventListener("change", () => {
+      selecaoSelecionada = selecao;
+      atualizar();
+    });
 
     label.appendChild(input);
-
-    label.appendChild(
-
-      document.createTextNode(selecao)
-
-    );
-
-
+    label.appendChild(document.createTextNode(selecao));
     seletorBox.appendChild(label);
-
   });
 
-
-  // ======================================================
-  // FUNÇÃO DE AJUSTE DOS NOMES DO MAPA
-  // ======================================================
-
   function ajustarNomeMapa(selecao) {
-
-    return selecao === "England"
-
-      ? "United Kingdom"
-
-      : selecao;
-
+    return selecao === "England" ? "United Kingdom" : selecao;
   }
-
-
-  // ======================================================
-  // INFORMAÇÕES DOS CAMPEÕES PARA O TOOLTIP DO MAPA
-  // ======================================================
 
   function obterHistoricoPais(nomePais) {
-
     const historicos = {
-
       Brazil:
         "Campeã na Suécia (1958), Chile (1962), México (1970), Estados Unidos (1994) e Japão/Coreia do Sul (2002). É a única seleção campeã em quatro continentes diferentes.",
-
-
       Germany:
         "Campeã na Suíça (1954), Alemanha (1974), Itália (1990) e Brasil (2014). É a única seleção europeia campeã em território sul-americano.",
-
-
       Italy:
         "Campeã na Itália (1934), França (1938), Espanha (1982) e Alemanha (2006). Foi a primeira seleção campeã fora de seus próprios domínios.",
-
-
       Argentina:
         "Campeã na Argentina (1978), México (1986) e Catar (2022).",
-
-
       France:
         "Campeã na França (1998) e Rússia (2018).",
-
-
       Uruguay:
         "Campeã no Uruguai (1930) e Brasil (1950). Todas as suas conquistas ocorreram em território sul-americano.",
-
-
       Spain:
         "Campeã na África do Sul (2010). É a única seleção campeã mundial em território africano.",
-
-
       "United Kingdom":
         "A Inglaterra foi campeã mundial em 1966, jogando em seus próprios domínios."
-
     };
 
+    if (historicos[nomePais]) return historicos[nomePais];
 
-    if (historicos[nomePais]) {
-
-      return historicos[nomePais];
-
-    }
-
-
-    if (
-      paises_copa.includes(nomePais)
-    ) {
-
+    if (paises_copa.includes(nomePais)) {
       return "Participante da Copa do Mundo sem títulos mundiais.";
-
     }
-
 
     return "País sem participação na Copa do Mundo.";
-
   }
-
-
-  // ======================================================
-  // DESENHAR MAPA-MÚNDI
-  // ======================================================
 
   function desenharMapa() {
-
-    const selecaoMapa =
-      ajustarNomeMapa(selecaoSelecionada);
-
+    const selecaoMapa = ajustarNomeMapa(selecaoSelecionada);
 
     const largura = 1000;
-
     const altura = 370;
 
+    const paises = topojson.feature(mundo, mundo.objects.countries);
 
-    const paises = topojson.feature(
+    const projecao = d3.geoNaturalEarth1()
+      .fitSize([largura, altura], paises);
 
-      mundo,
+    const caminho = d3.geoPath(projecao);
 
-      mundo.objects.countries
+    const svg = d3.create("svg")
+      .attr("viewBox", `0 0 ${largura} ${altura}`)
+      .attr("style", "width:100%; height:auto;");
 
-    );
-
-
-    const projecao = d3
-      .geoNaturalEarth1()
-
-      .fitSize(
-        [
-          largura,
-          altura
-        ],
-        paises
-      );
-
-
-    const caminho =
-      d3.geoPath(projecao);
-
-
-    const svg = d3
-
-      .create("svg")
-
-      .attr(
-        "viewBox",
-        `0 0 ${largura} ${altura}`
-      )
-
-      .attr(
-        "style",
-        "width:100%; height:auto;"
-      );
-
-
-    svg
-
-      .append("g")
-
+    svg.append("g")
       .selectAll("path")
-
       .data(paises.features)
-
       .join("path")
+      .attr("d", caminho)
+      .attr("fill", d => {
+        const nome = d.properties.name;
 
-      .attr(
-        "d",
-        caminho
-      )
+        if (nome === selecaoMapa) return "#e63946";
+        if (campeoes.includes(nome)) return "#7FFFD4";
+        if (paises_copa.includes(nome)) return "#1d3557";
 
-      .attr(
-        "fill",
-        d => {
-
-          const nome =
-            d.properties.name;
-
-
-          if (
-            nome === selecaoMapa
-          ) {
-
-            return "#e63946";
-
-          }
-
-
-          if (
-            campeoes.includes(nome)
-          ) {
-
-            return "#7FFFD4";
-
-          }
-
-
-          if (
-            paises_copa.includes(nome)
-          ) {
-
-            return "#1d3557";
-
-          }
-
-
-          return "#dddddd";
-
-        }
-      )
-
-      .attr(
-        "stroke",
-        "#ffffff"
-      )
-
-      .attr(
-        "stroke-width",
-        0.5
-      )
-
+        return "#dddddd";
+      })
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", 0.5)
       .append("title")
+      .text(d => `${d.properties.name}\n${obterHistoricoPais(d.properties.name)}`);
 
-      .text(
-        d =>
-          `${d.properties.name}\n${obterHistoricoPais(d.properties.name)}`
-      );
-
-
-    areaMapa.replaceChildren(
-      svg.node()
-    );
-
+    areaMapa.replaceChildren(svg.node());
   }
-
-
-  // ======================================================
-  // PREPARAR DADOS DOS CICLOS
-  // ======================================================
 
   function prepararDadosCiclos() {
-
-    const anosCampeao =
-      titulosPorPais[selecaoSelecionada] || [];
-
+    const anosCampeao = titulosPorPais[selecaoSelecionada] || [];
 
     return pre_campanhas
-
-      .filter(
-
-        d =>
-          d.team === selecaoSelecionada
-
-      )
-
+      .filter(d => d.team === selecaoSelecionada)
       .map(d => {
-
-        const saldo =
-
-          d.media_gols_feitos -
-
-          d.media_gols_sofridos;
-
+        const saldo = d.media_gols_feitos - d.media_gols_sofridos;
 
         return {
-
           ...d,
-
           saldo_gols: saldo,
-
-          campeao:
-
-            anosCampeao.includes(d.copa),
-
-          icone:
-
-            anosCampeao.includes(d.copa)
-
-              ? "🏆"
-
-              : "⚽",
-
+          campeao: anosCampeao.includes(d.copa),
+          icone: anosCampeao.includes(d.copa) ? "🏆" : "⚽",
           tooltipLinha:
-
             `Copa: ${d.copa}\n` +
-
             `Jogos: ${d.jogos}\n` +
-
             `Vitórias: ${d.vitorias}\n` +
-
             `% de vitórias: ${d.perc_vitorias.toFixed(0)}%`,
-
-
           tooltipScatter:
-
             `Copa: ${d.copa}\n` +
-
             `% de vitórias: ${d.perc_vitorias.toFixed(0)}%\n` +
-
             `Saldo médio de gols: ${saldo.toFixed(2)}`
-
         };
-
       });
-
   }
-
-
-  // ======================================================
-  // DESENHAR GRÁFICO DE LINHA
-  // ======================================================
 
   function desenharLinha(dadosCiclos) {
-
     const grafico = Plot.plot({
-
       width: 500,
-
       height: 310,
 
       marginTop: 35,
-
       marginRight: 25,
-
       marginBottom: 60,
-
       marginLeft: 65,
 
-
       style: {
-
         fontSize: 11,
-
         background: "#fafafa"
-
       },
-
 
       x: {
-
         label: "Ano da Copa",
-
-        domain: [
-          1930,
-          2026
-        ],
-
-        ticks:
-          d3.range(
-            1930,
-            2027,
-            8
-          )
-
+        domain: [1930, 2026],
+        ticks: d3.range(1930, 2027, 8),
+        tickFormat: d => String(Math.round(d))
       },
-
 
       y: {
-
-        label:
-          "% de vitórias por ciclo",
-
-        domain: [
-          0,
-          100
-        ],
-
+        label: "% de vitórias por ciclo",
+        domain: [0, 100],
         grid: true
-
       },
 
-
       marks: [
+        Plot.line(dadosCiclos, {
+          x: "copa",
+          y: "perc_vitorias",
+          stroke: "#1d3557",
+          strokeWidth: 3
+        }),
 
-        Plot.line(
-
-          dadosCiclos,
-
-          {
-
-            x: "copa",
-
-            y: "perc_vitorias",
-
-            stroke: "#1d3557",
-
-            strokeWidth: 3
-
-          }
-
-        ),
-
-
-        Plot.text(
-
-          dadosCiclos,
-
-          {
-
-            x: "copa",
-
-            y: "perc_vitorias",
-
-            text: "icone",
-
-            fontSize: 16,
-
-            title: "tooltipLinha"
-
-          }
-
-        )
-
+        Plot.text(dadosCiclos, {
+          x: "copa",
+          y: "perc_vitorias",
+          text: "icone",
+          fontSize: 16,
+          title: "tooltipLinha"
+        })
       ]
-
     });
 
-
-    areaLinha.replaceChildren(
-      grafico
-    );
-
+    areaLinha.replaceChildren(grafico);
   }
-
-
-  // ======================================================
-  // DESENHAR SCATTER PLOT
-  // ======================================================
 
   function desenharScatter(dadosCiclos) {
+    const largura = 500;
+    const altura = 310;
 
-    const grafico = Plot.plot({
+    const margem = {
+      top: 35,
+      right: 30,
+      bottom: 60,
+      left: 65
+    };
 
-      width: 500,
+    const xExtent = d3.extent(dadosCiclos, d => d.saldo_gols);
+    const folgaX = Math.max(0.25, (xExtent[1] - xExtent[0]) * 0.12);
 
-      height: 310,
+    const x = d3.scaleLinear()
+      .domain([xExtent[0] - folgaX, xExtent[1] + folgaX])
+      .range([margem.left, largura - margem.right]);
 
-      marginTop: 35,
+    const y = d3.scaleLinear()
+      .domain([0, 100])
+      .range([altura - margem.bottom, margem.top]);
 
-      marginRight: 30,
+    const svg = d3.create("svg")
+      .attr("viewBox", `0 0 ${largura} ${altura}`)
+      .attr("style", "width:100%; height:auto; background:#fafafa;");
 
-      marginBottom: 60,
+    svg.append("g")
+      .attr("transform", `translate(0,${altura - margem.bottom})`)
+      .call(d3.axisBottom(x).ticks(5));
 
-      marginLeft: 65,
+    svg.append("g")
+      .attr("transform", `translate(${margem.left},0)`)
+      .call(d3.axisLeft(y).ticks(5));
 
+    svg.append("text")
+      .attr("x", largura / 2)
+      .attr("y", altura - 12)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 11)
+      .attr("fill", "#333")
+      .text("Saldo médio de gols por ciclo");
 
-      style: {
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -altura / 2)
+      .attr("y", 15)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 11)
+      .attr("fill", "#333")
+      .text("% de vitórias por ciclo");
 
-        fontSize: 11,
+    const grupoPontos = svg.append("g");
 
-        background: "#fafafa"
+    const ponto = grupoPontos.selectAll("g")
+      .data(dadosCiclos)
+      .join("g")
+      .attr("transform", d => `translate(${x(d.saldo_gols)},${y(d.perc_vitorias)})`)
+      .style("cursor", "pointer");
 
-      },
+    ponto.append("text")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "central")
+      .attr("font-size", 17)
+      .text(d => d.icone);
 
+    ponto.append("text")
+      .attr("y", 22)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 9)
+      .attr("font-weight", 700)
+      .attr("fill", "#333")
+      .text(d => d.copa);
 
-      x: {
+    ponto.append("title")
+      .text(d => d.tooltipScatter);
 
-        label:
-          "Saldo médio de gols por ciclo",
+    ponto
+      .on("mouseover", function () {
+        ponto.attr("opacity", 0.25);
+        d3.select(this).attr("opacity", 1);
+      })
+      .on("mouseout", function () {
+        ponto.attr("opacity", 1);
+      });
 
-        grid: true
-
-      },
-
-
-      y: {
-
-        label:
-          "% de vitórias por ciclo",
-
-        domain: [
-          0,
-          100
-        ],
-
-        grid: true
-
-      },
-
-
-      marks: [
-
-        Plot.dot(
-
-          dadosCiclos,
-
-          {
-
-            x: "saldo_gols",
-
-            y: "perc_vitorias",
-
-            r: 7,
-
-            fill: d =>
-
-              d.campeao
-
-                ? "#D4AF37"
-
-                : "#1d3557",
-
-            stroke: "#222",
-
-            title: "tooltipScatter"
-
-          }
-
-        ),
-
-
-        Plot.text(
-
-          dadosCiclos,
-
-          {
-
-            x: "saldo_gols",
-
-            y: "perc_vitorias",
-
-            text: d => d.copa,
-
-            dx: 8,
-
-            dy: -8,
-
-            fontSize: 9,
-
-            fill: "#333"
-
-          }
-
-        )
-
-      ]
-
-    });
-
-
-    areaScatter.replaceChildren(
-      grafico
-    );
-
+    areaScatter.replaceChildren(svg.node());
   }
-
-
-  // ======================================================
-  // ATUALIZAÇÃO DO PAINEL
-  // ======================================================
 
   function atualizar() {
-
-    const dadosCiclos =
-      prepararDadosCiclos();
-
+    const dadosCiclos = prepararDadosCiclos();
 
     desenharMapa();
-
-
-    desenharLinha(
-      dadosCiclos
-    );
-
-
-    desenharScatter(
-      dadosCiclos
-    );
-
+    desenharLinha(dadosCiclos);
+    desenharScatter(dadosCiclos);
   }
 
-
-  // ======================================================
-  // PRIMEIRA RENDERIZAÇÃO
-  // ======================================================
-
   atualizar();
-
 }
 
-// ======================================================
-// PARTE 3 DE 5
-// PEDRO 2
-// GRÁFICO DE REDE DOS CARRASCOS DAS SELEÇÕES CAMPEÃS
-// ======================================================
 
 function desenharPedro2(jogos_copa) {
-
   const painel = document.getElementById("grafico-pedro-2");
 
   painel.classList.remove("grafico-placeholder");
   painel.innerHTML = "";
 
-
-  // ======================================================
-  // CONTAINER PRINCIPAL
-  // ======================================================
-
   const container = document.createElement("div");
-
   container.className = "rede-container";
 
-
   const titulo = document.createElement("h2");
-
   titulo.className = "pedro-titulo-grafico";
-
-  titulo.textContent =
-    "Gráfico de rede dos países carrascos das seleções campeãs";
-
+  titulo.textContent = "Gráfico de rede dos países carrascos das seleções campeãs";
 
   const legenda = document.createElement("div");
 
@@ -1395,22 +909,14 @@ function desenharPedro2(jogos_copa) {
     <span>As setas indicam o carrasco em direção à seleção campeã derrotada.</span>
   `;
 
-
   const areaRede = document.createElement("div");
-
   areaRede.style.width = "100%";
-
 
   container.appendChild(titulo);
   container.appendChild(legenda);
   container.appendChild(areaRede);
 
   painel.appendChild(container);
-
-
-  // ======================================================
-  // CAMPEÕES MUNDIAIS
-  // ======================================================
 
   const campeoes = [
     "Brazil",
@@ -1423,925 +929,355 @@ function desenharPedro2(jogos_copa) {
     "Uruguay"
   ];
 
+  const partidasUnicasMap = new Map();
 
-  // ======================================================
-  // CONTAGEM DE VITÓRIAS E DERROTAS
-  // ======================================================
+  jogos_copa.forEach(jogo => {
+    const times = [jogo.team, jogo.opponent].sort().join(" x ");
+
+    const gols = [jogo.goals_for, jogo.goals_against].sort((a, b) => a - b).join("-");
+
+    const chave = `${jogo.date.toISOString()} | ${times} | ${gols}`;
+
+    if (!partidasUnicasMap.has(chave)) {
+      partidasUnicasMap.set(chave, jogo);
+    }
+  });
+
+  const partidasUnicas = Array.from(partidasUnicasMap.values());
 
   const contagem = {};
 
   campeoes.forEach(campeao => {
-
     contagem[campeao] = {
       vitorias: {},
       derrotas: {}
     };
-
   });
 
-
-  jogos_copa.forEach(
-    ({ team, opponent, result }) => {
-
-      if (campeoes.includes(team)) {
-
-        if (result === "W") {
-
-          contagem[team].vitorias[opponent] =
-            (contagem[team].vitorias[opponent] || 0) + 1;
-
-        }
-
-
-        if (result === "L") {
-
-          contagem[team].derrotas[opponent] =
-            (contagem[team].derrotas[opponent] || 0) + 1;
-
-        }
-
+  partidasUnicas.forEach(({ team, opponent, result }) => {
+    if (campeoes.includes(team)) {
+      if (result === "W") {
+        contagem[team].vitorias[opponent] =
+          (contagem[team].vitorias[opponent] || 0) + 1;
       }
 
-
-      if (campeoes.includes(opponent)) {
-
-        if (result === "L") {
-
-          contagem[opponent].vitorias[team] =
-            (contagem[opponent].vitorias[team] || 0) + 1;
-
-        }
-
-
-        if (result === "W") {
-
-          contagem[opponent].derrotas[team] =
-            (contagem[opponent].derrotas[team] || 0) + 1;
-
-        }
-
+      if (result === "L") {
+        contagem[team].derrotas[opponent] =
+          (contagem[team].derrotas[opponent] || 0) + 1;
       }
-
     }
-  );
 
+    if (campeoes.includes(opponent)) {
+      if (result === "L") {
+        contagem[opponent].vitorias[team] =
+          (contagem[opponent].vitorias[team] || 0) + 1;
+      }
 
-  // ======================================================
-  // FUNÇÃO PARA OBTER MAIORES CARRASCOS
-  // ======================================================
+      if (result === "W") {
+        contagem[opponent].derrotas[team] =
+          (contagem[opponent].derrotas[team] || 0) + 1;
+      }
+    }
+  });
 
   function buscarMaximo(objeto) {
-
     let rivais = [];
-
     let max = 0;
 
-
-    Object.entries(objeto).forEach(
-      ([rival, quantidade]) => {
-
-        if (quantidade > max) {
-
-          max = quantidade;
-
-          rivais = [rival];
-
-        }
-
-        else if (
-
-          quantidade === max &&
-
-          max > 0
-
-        ) {
-
-          rivais.push(rival);
-
-        }
-
+    Object.entries(objeto).forEach(([rival, quantidade]) => {
+      if (quantidade > max) {
+        max = quantidade;
+        rivais = [rival];
       }
-    );
 
+      else if (quantidade === max && max > 0) {
+        rivais.push(rival);
+      }
+    });
 
-    return {
-      rivais,
-      max
-    };
-
+    return { rivais, max };
   }
 
-
-  // ======================================================
-  // TABELA DE CARRASCOS POR CAMPEÃO
-  // ======================================================
-
   const freguesesCarrascos = campeoes
-
     .map(campeao => {
-
-      const carrasco =
-        buscarMaximo(
-          contagem[campeao].derrotas
-        );
-
+      const carrasco = buscarMaximo(contagem[campeao].derrotas);
 
       return {
-
         selecao: campeao,
-
         carrascos: carrasco.rivais,
-
         derrotas: carrasco.max
-
       };
-
     })
-
-    .sort(
-      (a, b) => a.selecao.localeCompare(b.selecao)
-    );
-
-
-  // ======================================================
-  // MONTAGEM DOS NÓS E LINKS
-  // ======================================================
+    .sort((a, b) => a.selecao.localeCompare(b.selecao));
 
   const nodesMap = new Set();
-
   const links = [];
-
   const derrotasPorCampeao = {};
 
-
   freguesesCarrascos.forEach(row => {
-
     const selecao = row.selecao;
 
     nodesMap.add(selecao);
 
-    derrotasPorCampeao[selecao] =
-      row.derrotas || 0;
-
+    derrotasPorCampeao[selecao] = row.derrotas || 0;
 
     row.carrascos.forEach(carrasco => {
-
-      if (
-        carrasco &&
-        carrasco !== "Nenhum"
-      ) {
-
+      if (carrasco && carrasco !== "Nenhum") {
         nodesMap.add(carrasco);
 
-
         links.push({
-
           source: carrasco,
-
           target: selecao
-
         });
-
       }
-
     });
-
   });
-
 
   const nodes = Array.from(nodesMap).map(id => {
-
-    const ehCampeao =
-      campeoes.includes(id);
-
+    const ehCampeao = campeoes.includes(id);
 
     return {
-
       id,
-
-      group:
-        ehCampeao
-
-          ? "Campeão"
-
-          : "Carrasco",
-
-      weight:
-        ehCampeao
-
-          ? derrotasPorCampeao[id] || 0
-
-          : 1
-
+      group: ehCampeao ? "Campeão" : "Carrasco",
+      weight: ehCampeao ? derrotasPorCampeao[id] || 0 : 1
     };
-
   });
 
-
-  // ======================================================
-  // DIMENSÕES DA REDE
-  // ======================================================
-
   const width = 900;
-
   const height = 520;
 
-
   const nodeStroke = "#1a1a1a";
-
   const linkOpacity = 0.35;
-
   const nodeDeselectOpacity = 0.25;
-
   const linkDeselectOpacity = 0.1;
-
   const nodeHighlightStroke = "#000000";
-
   const nodeHighlightStrokeWidth = 2.5;
 
-
   function radiusNode(d) {
-
     if (d.group === "Campeão") {
-
-      return Math.max(
-        10,
-        d.weight * 4.5
-      );
-
+      return Math.max(10, d.weight * 4.5);
     }
-
 
     return 6;
-
   }
 
-
-  // ======================================================
-  // SIMULAÇÃO DE FORÇAS
-  // ======================================================
-
-  const simulation = d3
-
-    .forceSimulation(nodes)
-
+  const simulation = d3.forceSimulation(nodes)
     .force(
       "link",
-      d3
-        .forceLink(links)
+      d3.forceLink(links)
         .id(d => d.id)
-        .distance(120)
+        .distance(130)
     )
-
     .force(
       "charge",
-      d3
-        .forceManyBody()
-        .strength(-430)
+      d3.forceManyBody().strength(-430)
     )
-
-    .force(
-      "center",
-      d3.forceCenter(0, 0)
-    )
-
+    .force("center", d3.forceCenter(0, 0))
     .force(
       "collision",
-      d3
-        .forceCollide()
-        .radius(d => radiusNode(d) + 9)
+      d3.forceCollide().radius(d => radiusNode(d) + 10)
     );
 
-
-  // ======================================================
-  // SVG
-  // ======================================================
-
-  const svg = d3
-
-    .create("svg")
-
+  const svg = d3.create("svg")
     .attr("width", width)
-
     .attr("height", height)
+    .attr("viewBox", [-width / 2, -height / 2, width, height])
+    .attr("style", "max-width:100%; height:auto; background:#fafafa; border-radius:12px;");
 
-    .attr(
-      "viewBox",
-      [
-        -width / 2,
-        -height / 2,
-        width,
-        height
-      ]
-    )
+  svg.on("click", deselectNode);
 
-    .attr(
-      "style",
-      "max-width:100%; height:auto; background:#fafafa; border-radius:12px;"
-    );
-
-
-  svg.on(
-    "click",
-    deselectNode
-  );
-
-
-  // ======================================================
-  // MARCADORES DAS SETAS
-  // ======================================================
-
-  svg
-
-    .append("defs")
-
+  svg.append("defs")
     .selectAll("marker")
-
     .data(["Carrasco"])
-
     .join("marker")
-
-    .attr(
-      "id",
-      d => `arrow-${d}`
-    )
-
-    .attr(
-      "viewBox",
-      "0 -5 10 10"
-    )
-
-    .attr("refX", 20)
-
+    .attr("id", d => `arrow-${d}`)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 7)
     .attr("refY", 0)
-
-    .attr("markerWidth", 4.5)
-
-    .attr("markerHeight", 4.5)
-
+    .attr("markerWidth", 5.5)
+    .attr("markerHeight", 5.5)
     .attr("orient", "auto")
-
     .append("path")
+    .attr("fill", "#1a1a1a")
+    .attr("d", "M0,-4L8,0L0,4");
 
-    .attr(
-      "fill",
-      "#1a1a1a"
-    )
-
-    .attr(
-      "d",
-      "M0,-3L7,0L0,3"
-    );
-
-
-  // ======================================================
-  // LINKS
-  // ======================================================
-
-  const link = svg
-
-    .append("g")
-
+  const link = svg.append("g")
     .selectAll("line")
-
     .data(links)
-
     .join("line")
-
     .attr("stroke", "#1a1a1a")
-
     .attr("opacity", linkOpacity)
+    .attr("stroke-width", 2.4)
+    .attr("marker-end", "url(#arrow-Carrasco)");
 
-    .attr("stroke-width", 3)
-
-    .attr(
-      "marker-end",
-      "url(#arrow-Carrasco)"
-    );
-
-
-  // ======================================================
-  // NÓS
-  // ======================================================
-
-  const node = svg
-
-    .append("g")
-
+  const node = svg.append("g")
     .selectAll("circle")
-
     .data(nodes)
-
     .join("circle")
+    .attr("r", d => radiusNode(d))
+    .attr("fill", d => d.group === "Campeão" ? "#1BA652" : "#F7A72F")
+    .attr("stroke", nodeStroke)
+    .attr("stroke-width", d => d.group === "Campeão" ? 1.5 : 1.0)
+    .on("click", clicked);
 
-    .attr(
-      "r",
-      d => radiusNode(d)
-    )
-
-    .attr(
-      "fill",
-      d =>
-        d.group === "Campeão"
-
-          ? "#1BA652"
-
-          : "#F7A72F"
-    )
-
-    .attr(
-      "stroke",
-      nodeStroke
-    )
-
-    .attr(
-      "stroke-width",
-      d =>
-        d.group === "Campeão"
-
-          ? 1.5
-
-          : 1.0
-    )
-
-    .on(
-      "click",
-      clicked
+  node.append("title")
+    .text(d =>
+      d.group === "Campeão"
+        ? `${d.id}\n${d.weight} derrota(s) contra seus maiores carrascos`
+        : `${d.id}\nCarrasco`
     );
 
-
-  node
-
-    .append("title")
-
-    .text(
-      d =>
-        d.group === "Campeão"
-
-          ? `${d.id}\n${d.weight} derrota(s) contra seus maiores carrascos`
-
-          : `${d.id}\nCarrasco`
-    );
-
-
-  // ======================================================
-  // RÓTULOS
-  // ======================================================
-
-  const text = svg
-
-    .append("g")
-
+  const text = svg.append("g")
     .selectAll("text")
-
     .data(nodes)
-
     .join("text")
-
-    .attr(
-      "dx",
-      d => radiusNode(d) + 6
-    )
-
+    .attr("dx", d => radiusNode(d) + 6)
     .attr("dy", "0.31em")
-
     .text(d => d.id)
-
-    .style(
-      "font-family",
-      "Arial, Helvetica, sans-serif"
-    )
-
-    .style(
-      "font-size",
-      d =>
-        d.group === "Campeão"
-
-          ? "12px"
-
-          : "10.5px"
-    )
-
-    .style(
-      "fill",
-      d =>
-        d.group === "Campeão"
-
-          ? "#1a1a1a"
-
-          : "#333333"
-    )
-
-    .style(
-      "font-weight",
-      d =>
-        d.group === "Campeão"
-
-          ? "700"
-
-          : "400"
-    )
-
-    .style(
-      "user-select",
-      "none"
-    )
-
-    .style(
-      "pointer-events",
-      "none"
-    );
-
-
-  // ======================================================
-  // DRAG
-  // ======================================================
+    .style("font-family", "Arial, Helvetica, sans-serif")
+    .style("font-size", d => d.group === "Campeão" ? "12px" : "10.5px")
+    .style("fill", d => d.group === "Campeão" ? "#1a1a1a" : "#333333")
+    .style("font-weight", d => d.group === "Campeão" ? "700" : "400")
+    .style("user-select", "none")
+    .style("pointer-events", "none");
 
   node.call(
-
     d3.drag()
-
-      .on(
-        "start",
-        dragstarted
-      )
-
-      .on(
-        "drag",
-        dragged
-      )
-
-      .on(
-        "end",
-        dragended
-      )
-
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended)
   );
 
+  simulation.on("tick", () => {
+    link
+      .attr("x1", d => {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-  // ======================================================
-  // TICK DA SIMULAÇÃO
-  // ======================================================
+        return d.source.x + (dx / dist) * (radiusNode(d.source) + 2);
+      })
+      .attr("y1", d => {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-  simulation.on(
-    "tick",
-    () => {
+        return d.source.y + (dy / dist) * (radiusNode(d.source) + 2);
+      })
+      .attr("x2", d => {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-      link
+        return d.target.x - (dx / dist) * (radiusNode(d.target) + 7);
+      })
+      .attr("y2", d => {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-        .attr(
-          "x1",
-          d => d.source.x
-        )
+        return d.target.y - (dy / dist) * (radiusNode(d.target) + 7);
+      });
 
-        .attr(
-          "y1",
-          d => d.source.y
-        )
+    node
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
 
-        .attr(
-          "x2",
-          d => d.target.x
-        )
-
-        .attr(
-          "y2",
-          d => d.target.y
-        );
-
-
-      node
-
-        .attr(
-          "cx",
-          d => d.x
-        )
-
-        .attr(
-          "cy",
-          d => d.y
-        );
-
-
-      text
-
-        .attr(
-          "x",
-          d => d.x
-        )
-
-        .attr(
-          "y",
-          d => d.y
-        );
-
-    }
-  );
-
-
-  // ======================================================
-  // FUNÇÕES DE INTERAÇÃO
-  // ======================================================
+    text
+      .attr("x", d => d.x)
+      .attr("y", d => d.y);
+  });
 
   function dragstarted(event) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
 
-    if (!event.active) {
-
-      simulation.alphaTarget(0.3).restart();
-
-    }
-
-
-    event.subject.fx =
-      event.subject.x;
-
-    event.subject.fy =
-      event.subject.y;
-
+    event.subject.fx = event.subject.x;
+    event.subject.fy = event.subject.y;
   }
-
 
   function dragged(event) {
-
-    event.subject.fx =
-      event.x;
-
-    event.subject.fy =
-      event.y;
-
+    event.subject.fx = event.x;
+    event.subject.fy = event.y;
   }
-
 
   function dragended(event) {
+    if (!event.active) simulation.alphaTarget(0);
 
-    if (!event.active) {
-
-      simulation.alphaTarget(0);
-
-    }
-
-
-    event.subject.fx =
-      null;
-
-    event.subject.fy =
-      null;
-
+    event.subject.fx = null;
+    event.subject.fy = null;
   }
 
-
   function clicked(event, d) {
-
     event.stopPropagation();
 
+    svg.selectAll("circle")
+      .attr("stroke", nodeStroke)
+      .attr("stroke-width", n => n.group === "Campeão" ? 1.5 : 1.0)
+      .attr("stroke-opacity", nodeDeselectOpacity)
+      .attr("fill-opacity", nodeDeselectOpacity);
 
-    svg
+    svg.selectAll("line")
+      .attr("opacity", linkDeselectOpacity);
 
-      .selectAll("circle")
-
-      .attr(
-        "stroke",
-        nodeStroke
-      )
-
-      .attr(
-        "stroke-width",
-        n =>
-          n.group === "Campeão"
-
-            ? 1.5
-
-            : 1.0
-      )
-
-      .attr(
-        "stroke-opacity",
-        nodeDeselectOpacity
-      )
-
-      .attr(
-        "fill-opacity",
-        nodeDeselectOpacity
-      );
-
-
-    svg
-
-      .selectAll("line")
-
-      .attr(
-        "opacity",
-        linkDeselectOpacity
-      );
-
-
-    svg
-
-      .selectAll("text")
-
-      .attr(
-        "fill-opacity",
-        nodeDeselectOpacity
-      );
-
+    svg.selectAll("text")
+      .attr("fill-opacity", nodeDeselectOpacity);
 
     d3.select(event.currentTarget)
+      .attr("stroke", nodeHighlightStroke)
+      .attr("stroke-width", nodeHighlightStrokeWidth)
+      .attr("stroke-opacity", 1)
+      .attr("fill-opacity", 1);
 
-      .attr(
-        "stroke",
-        nodeHighlightStroke
-      )
-
-      .attr(
-        "stroke-width",
-        nodeHighlightStrokeWidth
-      )
-
-      .attr(
-        "stroke-opacity",
-        1
-      )
-
-      .attr(
-        "fill-opacity",
-        1
-      );
-
-
-    svg
-
-      .selectAll("text")
-
-      .filter(
-        t => t.id === d.id
-      )
-
-      .attr(
-        "fill-opacity",
-        1
-      );
-
+    svg.selectAll("text")
+      .filter(t => t.id === d.id)
+      .attr("fill-opacity", 1);
 
     const vizinhos = new Set();
 
-
     links.forEach(l => {
+      if (l.source.id === d.id) {
+        vizinhos.add(l.target.id);
 
-      if (
-        l.source.id === d.id
-      ) {
-
-        vizinhos.add(
-          l.target.id
-        );
-
-
-        svg
-
-          .selectAll("line")
-
-          .filter(
-            line =>
-              line.source.id === d.id &&
-              line.target.id === l.target.id
-          )
-
-          .attr(
-            "opacity",
-            0.9
-          );
-
+        svg.selectAll("line")
+          .filter(line => line.source.id === d.id && line.target.id === l.target.id)
+          .attr("opacity", 0.9);
       }
 
+      if (l.target.id === d.id) {
+        vizinhos.add(l.source.id);
 
-      if (
-        l.target.id === d.id
-      ) {
-
-        vizinhos.add(
-          l.source.id
-        );
-
-
-        svg
-
-          .selectAll("line")
-
-          .filter(
-            line =>
-              line.source.id === l.source.id &&
-              line.target.id === d.id
-          )
-
-          .attr(
-            "opacity",
-            0.9
-          );
-
+        svg.selectAll("line")
+          .filter(line => line.source.id === l.source.id && line.target.id === d.id)
+          .attr("opacity", 0.9);
       }
-
     });
 
+    svg.selectAll("circle")
+      .filter(n => vizinhos.has(n.id))
+      .attr("stroke-opacity", 1)
+      .attr("fill-opacity", 1);
 
-    svg
-
-      .selectAll("circle")
-
-      .filter(
-        n => vizinhos.has(n.id)
-      )
-
-      .attr(
-        "stroke-opacity",
-        1
-      )
-
-      .attr(
-        "fill-opacity",
-        1
-      );
-
-
-    svg
-
-      .selectAll("text")
-
-      .filter(
-        t => vizinhos.has(t.id)
-      )
-
-      .attr(
-        "fill-opacity",
-        1
-      );
-
+    svg.selectAll("text")
+      .filter(t => vizinhos.has(t.id))
+      .attr("fill-opacity", 1);
   }
-
 
   function deselectNode() {
+    svg.selectAll("circle")
+      .attr("stroke", nodeStroke)
+      .attr("stroke-width", d => d.group === "Campeão" ? 1.5 : 1.0)
+      .attr("stroke-opacity", 1)
+      .attr("fill-opacity", 1);
 
-    svg
+    svg.selectAll("line")
+      .attr("opacity", linkOpacity);
 
-      .selectAll("circle")
-
-      .attr(
-        "stroke",
-        nodeStroke
-      )
-
-      .attr(
-        "stroke-width",
-        d =>
-          d.group === "Campeão"
-
-            ? 1.5
-
-            : 1.0
-      )
-
-      .attr(
-        "stroke-opacity",
-        1
-      )
-
-      .attr(
-        "fill-opacity",
-        1
-      );
-
-
-    svg
-
-      .selectAll("line")
-
-      .attr(
-        "opacity",
-        linkOpacity
-      );
-
-
-    svg
-
-      .selectAll("text")
-
-      .attr(
-        "fill-opacity",
-        1
-      );
-
+    svg.selectAll("text")
+      .attr("fill-opacity", 1);
   }
 
-
-  // ======================================================
-  // RENDERIZAÇÃO FINAL
-  // ======================================================
-
-  areaRede.appendChild(
-    svg.node()
-  );
-
+  areaRede.appendChild(svg.node());
 }
-
 // ======================================================
 // PARTE 4 DE 5
 // DNA 1
