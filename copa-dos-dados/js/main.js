@@ -1321,7 +1321,7 @@ function desenharCategoria1(
   const titulo = document.createElement("h2");
 
   titulo.textContent =
-    "Rankings das seleções participantes no ciclo anterior à Copa selecionada.";
+    "Top 10 ranking de desempenho pré-Copa";
 
   titulo.style.marginTop = "0";
   titulo.style.marginBottom = "18px";
@@ -1622,7 +1622,7 @@ function desenharCategoria2(
   const titulo = document.createElement("h2");
 
   titulo.textContent =
-    "Histograma das posições históricas dos campeões e comparação com favoritos atuais para 2026.";
+    "Frequência das posições dos campeões nos rankings pré-Copa";
 
   titulo.style.marginTop = "0";
   titulo.style.marginBottom = "18px";
@@ -2015,7 +2015,7 @@ function desenharCategoria3(
   const titulo = document.createElement("h2");
 
   titulo.textContent =
-    "Diagrama de dispersão comparando o desempenho pré-Copa dos campeões históricos com as seleções participantes da Copa de 2026.";
+    "Dispersão do desempenho pré-Copa: campeões históricos e seleções de 2026";
 
   titulo.style.marginTop = "0";
   titulo.style.marginBottom = "18px";
